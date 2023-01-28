@@ -14,7 +14,7 @@ There are three main patterns for asynchronous programming in .NET:
 
 ## TAP
 
-The TAP is the recommended pattern for asynchronous programming in .NET. It is based on the `Task` and `Task<T>` types. The `Task` type represents a single operation that does not return a value. The `Task<T>` type represents a single operation that returns a value of type `T`.
+> The TAP is the recommended pattern for asynchronous programming in .NET. It is based on the `Task` and `Task<T>` types. The `Task` type represents a single operation that does not return a value. The `Task<T>` type represents a single operation that returns a value of type `T`.
 
 Example:
 
@@ -28,7 +28,7 @@ public async Task<string> GetAsync(string url)
 
 ## EAP
 
-The EAP is the legacy pattern for asynchronous programming in .NET. It is based on events. The `XXXCompleted` events are raised when an asynchronous operation completes. The `XXXCompletedEventArgs` class contains the result of the asynchronous operation. The `XXXAsync` methods start an asynchronous operation.
+> The EAP is the legacy pattern for asynchronous programming in .NET. It is based on events. The `XXXCompleted` events are raised when an asynchronous operation completes. The `XXXCompletedEventArgs` class contains the result of the asynchronous operation. The `XXXAsync` methods start an asynchronous operation.
 
 Example:
 
@@ -43,7 +43,7 @@ public void GetAsync(string url, Action<string> callback)
 
 ## APM
 
-The APM is the legacy pattern for asynchronous programming in .NET. It is based on the `BeginXXX` and `EndXXX` methods. The `BeginXXX` methods start an asynchronous operation and return an `IAsyncResult` object. The `EndXXX` methods complete an asynchronous operation and return a value.
+> The APM is the legacy pattern for asynchronous programming in .NET. It is based on the `BeginXXX` and `EndXXX` methods. The `BeginXXX` methods start an asynchronous operation and return an `IAsyncResult` object. The `EndXXX` methods complete an asynchronous operation and return a value.
 
 Example using `BeginXXX` and `EndXXX` methods:
 
