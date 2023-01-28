@@ -7,11 +7,11 @@ Original course materials can be found [here](https://app.pluralsight.com/librar
 ## Benefits of Asynchronous Programming
 
 - **scalability** (scaling up) - asynchronous programming allows you to perform multiple operations at the same time. This can improve the scalability of your application,
-- asynchronous code might or might not be **faster** than synchronous code. It depends on the operation and the context. For example, if you are performing a long-running operation, then asynchronous code might be faster than synchronous code. However, if you are performing a short-running operation, then synchronous code might be faster than asynchronous code.
+- asynchronous code might or might not be **faster** than synchronous code. It depends on the operation and the context.
 
 We must understand our workload and the context in which we are executing our code. We must also understand the performance characteristics of the operations we are performing.
 
-Our code can be I/O-bound or CPU-bound. I/O-bound code is code that is waiting for an I/O operation to complete. CPU-bound code is code that is performing a CPU-intensive operation. In case of I/O-bound code, asynchronous code might be faster than synchronous code. In case of CPU-bound code (e.g. a long-running loop), synchronous code might be faster than asynchronous code. While developing desktop applications we can use background threads to perform CPU-bound operations and while doing so we can keep the UI responsive. However, in case of web applications this idea might lead to be as useful and we should avoid it of course we can still use asynchronous code to perform I/O-bound operations.
+Our code can be I/O-bound or CPU-bound. I/O-bound code is code that is waiting for an I/O operation to complete. CPU-bound code is code that is performing a CPU-intensive operation. In case of I/O-bound code, asynchronous code might be faster than synchronous code. In case of CPU-bound code (e.g. a long-running loop), synchronous code might be faster than asynchronous code. While developing desktop applications we can use background threads to perform CPU-bound operations and while doing so we can keep the UI responsive. However, in case of web applications this idea might lead to poor perfromance and we should avoid it - of course we can still use asynchronous code to perform I/O-bound operations.
 
 ## Async Patterns
 
