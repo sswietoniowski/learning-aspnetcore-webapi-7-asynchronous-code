@@ -55,3 +55,11 @@ public string GetAsync(string url)
     return client.EndDownloadString(result);
 }
 ```
+
+## Async Return Types
+
+There are three main return types for asynchronous programming in .NET:
+
+- `void` - the method does not return a value (not recommended!),
+- `Task` - the method returns a `Task` object that represents a single operation that does not return a value,
+- `Task<T>` - the method returns a `Task<T>` object that represents a single operation that returns a value of type `T`.
