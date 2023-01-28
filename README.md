@@ -60,6 +60,8 @@ public string GetAsync(string url)
 
 There are three main return types for asynchronous programming in .NET:
 
-- `void` - the method does not return a value (not recommended!),
+- `void` - the method does not return a value (not recommended - only advised for event handlers),
 - `Task` - the method returns a `Task` object that represents a single operation that does not return a value,
 - `Task<T>` - the method returns a `Task<T>` object that represents a single operation that returns a value of type `T`.
+
+`Task` and `Task<T>` represents the execution of an asynchronous operation. They are not the result of an asynchronous operation - which is returned by the `Result` property (if the operation completed successfully) or the `Exception` property (if the operation failed).
