@@ -95,3 +95,26 @@ Inside a repository interface we won't need to use `async` and `await` keywords.
 ## WebSurge
 
 > WebSurge is a load testing tool for web applications. It is based on the `HttpClient` class and it is designed to be used in a CI/CD pipeline.
+
+You can see the difference between synchronous and asynchronous code by using WebSurge.
+
+Code without `async` and `await` keywords:
+
+![WebSurge - synchronous code](./img/01_books_api_sync.png)
+
+Code with `async` and `await` keywords:
+
+![WebSurge - asynchronous code](./img/02_books_api_async.png)
+
+There is not much difference in this case. However, if we increase the number of concurrent users, we will see a significant difference.
+
+## The Outer Facing Model
+
+> The outer facing model is a design pattern that is used to abstract the inner model of an application. It is based on the outer facing model interface and the outer facing model implementation. The outer facing model interface defines the operations that can be performed on the inner model. The outer facing model implementation implements the outer facing model interface and performs the actual operations on the inner model.
+
+In our case internally we will use the `Book` class and externally we will use the `BookDto` class.
+
+To represent the resource data type we can use:
+
+- model classes (DTOs) - statically typed approach,
+- dynamic objects (anonymous objects, ExpandoObject) - dynamically typed approach.

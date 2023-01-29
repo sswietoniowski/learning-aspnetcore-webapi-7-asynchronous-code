@@ -4,6 +4,42 @@ Websurge-Request-Name: GetBookByIdSync
 
 ------------------------------------------------------------------
 
+GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: GetBookByIdSync
+
+------------------------------------------------------------------
+
+GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: GetBookByIdSync
+
+------------------------------------------------------------------
+
+GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: GetBookByIdSync
+
+------------------------------------------------------------------
+
+GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: GetBookByIdAsync
+
+------------------------------------------------------------------
+
+GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: GetBookByIdAsync
+
+------------------------------------------------------------------
+
+GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: GetBookByIdAsync
+
+------------------------------------------------------------------
+
 GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
 Accept-Encoding: gzip,deflate
 Websurge-Request-Name: GetBookByIdAsync
@@ -22,7 +58,7 @@ Websurge-Request-Name: GetBookByIdAsync
   "NoContentDecompression": false,
   "UpdateHeadersFromRequest": false,
   "SecondsToRun": 60,
-  "ThreadCount": 2,
+  "ThreadCount": 16,
   "DelayTimeMs": 0,
   "WarmupSeconds": 2,
   "RequestTimeoutMs": 15000,
@@ -37,7 +73,64 @@ Websurge-Request-Name: GetBookByIdAsync
   "Username": null,
   "Password": null,
   "UsernamePasswordType": "Negotiate",
-  "Users": [],
+  "Users": [
+    {
+      "Id": "user-7f00e6ab",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-d0683383",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-39861400",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-e473faf6",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-88cf3892",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-f8eb3ab7",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-28562326",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    },
+    {
+      "Id": "user-70ea8fb5",
+      "IsActive": true,
+      "HttpForms": [],
+      "AuthCookie": null,
+      "Authorization": null
+    }
+  ],
   "UserAgent": null,
   "CaptureMinimalResponseData": false,
   "MaxResponseSize": 0,
