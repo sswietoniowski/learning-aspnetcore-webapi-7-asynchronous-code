@@ -47,7 +47,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         ProblemDetails problemDetails = new()
         {
             Status = (int)statusCode,
-            Type = "[Custom Middleware] Error",
+            Type = "Error",
             Title = message,
             Detail = stackTrace,
         };
