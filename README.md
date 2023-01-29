@@ -114,7 +114,7 @@ As an alternative to WebSurge we can use [k6](https://k6.io/).
 
 Good description how it can be used can be found [here](https://code-maze.com/aspnetcore-performance-testing-with-k6/).
 
-Basic config for `k6` was created inside `Tests\Scripts` folder (file: `basic-test.js`).
+Basic config for `k6` was created inside `books\api\Tests\Scripts` folder (file: `basic-test.js`).
 
 For testing I've used this command:
 
@@ -148,7 +148,3 @@ Booth approaches require a mapping in controller actions (often implemented with
 > This pattern breaks up the business layer of the app into two distinct layers: the repository layer and the service layer. The repository layer is responsible for data access and the service layer is responsible for business logic (it is also this layer where outer facing models are used).
 
 This is not a design pattern, but a good practice. It is based on the repository pattern and the service pattern. Nice explanation can be found [here](https://exceptionnotfound.net/the-repository-service-pattern-with-dependency-injection-and-asp-net-core/).
-
-```
-
-```
