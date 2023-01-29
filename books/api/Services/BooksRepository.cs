@@ -1,7 +1,8 @@
+using Books.Api.DataAccess;
 using Books.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Books.Api.DataAccess;
+namespace Books.Api.Services;
 
 public class BooksRepository : IBooksRepository
 {
@@ -9,7 +10,7 @@ public class BooksRepository : IBooksRepository
 
     public BooksRepository(BooksDbContext booksDbContext)
     {
-        this.context = booksDbContext;
+        context = booksDbContext;
     }
 
     public async Task<IEnumerable<Book>> GetBooksAsync() => await context.Books.ToListAsync();
@@ -19,15 +20,11 @@ public class BooksRepository : IBooksRepository
     public async Task CreateBookAsync(Book book)
     {
         await context.Books.AddAsync(book);
-
-        await context.SaveChangesAsync();
     }
 
-    public async Task UpdateBookAsync(Book book)
+    public void UpdateBook(Book book)
     {
         context.Books.Update(book);
-
-        await context.SaveChangesAsync();
     }
 
     public async Task DeleteBookAsync(Guid id)
@@ -37,8 +34,8 @@ public class BooksRepository : IBooksRepository
         if (book is not null)
         {
             context.Books.Remove(book);
-
-            await context.SaveChangesAsync();
         }
     }
+
+    public async Task SaveChangesAsync() => await context.SaveChangesAsync();    
 }

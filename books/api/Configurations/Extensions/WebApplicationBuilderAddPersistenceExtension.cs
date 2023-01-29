@@ -1,6 +1,7 @@
 namespace Books.Api.Configurations.Extensions
 {
     using Books.Api.DataAccess;
+    using Books.Api.Services;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
