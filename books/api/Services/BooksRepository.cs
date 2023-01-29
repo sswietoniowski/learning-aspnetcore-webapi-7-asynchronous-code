@@ -37,5 +37,29 @@ public class BooksRepository : IBooksRepository
         }
     }
 
-    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();    
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+
+    public IEnumerable<Book> GetBooks() => _context.Books.Include(b => b.Author).ToList();
+
+    public Book? GetBookById(Guid id) => _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);
+
+    public void CreateBook(Book book)
+    {
+        _context.Books.Add(book);
+    }
+
+    public void DeleteBook(Guid id)
+    {
+        var book = GetBookById(id);
+
+        if (book is not null)
+        {
+            _context.Books.Remove(book);
+        }
+    }
+
+    public void SaveChanges()
+    {
+        _context.SaveChanges();
+    }
 }
