@@ -100,7 +100,7 @@ You can see the difference between synchronous and asynchronous code by using We
 
 Code without `async` and `await` keywords:
 
-![WebSurge - synchronous code](./img/01_books_api_sync.png)
+![WebSurge - synchronous code](./img/01_books_api_sync.PNG)
 
 Code with `async` and `await` keywords:
 
