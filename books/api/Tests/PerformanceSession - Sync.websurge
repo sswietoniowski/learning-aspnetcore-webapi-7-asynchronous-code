@@ -1,48 +1,28 @@
 GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
 Accept-Encoding: gzip,deflate
 Websurge-Request-Name: GetBookByIdSync
+WebSurge-Request-Group: Sync
 
 ------------------------------------------------------------------
 
 GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
 Accept-Encoding: gzip,deflate
 Websurge-Request-Name: GetBookByIdSync
+WebSurge-Request-Group: Sync
 
 ------------------------------------------------------------------
 
 GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
 Accept-Encoding: gzip,deflate
 Websurge-Request-Name: GetBookByIdSync
+WebSurge-Request-Group: Sync
 
 ------------------------------------------------------------------
 
 GET http://localhost:5000/api/books/sync/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
 Accept-Encoding: gzip,deflate
 Websurge-Request-Name: GetBookByIdSync
-
-------------------------------------------------------------------
-
-GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
-Accept-Encoding: gzip,deflate
-Websurge-Request-Name: GetBookByIdAsync
-
-------------------------------------------------------------------
-
-GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
-Accept-Encoding: gzip,deflate
-Websurge-Request-Name: GetBookByIdAsync
-
-------------------------------------------------------------------
-
-GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
-Accept-Encoding: gzip,deflate
-Websurge-Request-Name: GetBookByIdAsync
-
-------------------------------------------------------------------
-
-GET http://localhost:5000/api/books/async/c0a80121-48aa-48b0-8c0c-927b1f8eac2c HTTP/2.0
-Accept-Encoding: gzip,deflate
-Websurge-Request-Name: GetBookByIdAsync
+WebSurge-Request-Group: Sync
 
 ------------------------------------------------------------------
 
@@ -58,7 +38,7 @@ Websurge-Request-Name: GetBookByIdAsync
   "NoContentDecompression": false,
   "UpdateHeadersFromRequest": false,
   "SecondsToRun": 60,
-  "ThreadCount": 16,
+  "ThreadCount": 8,
   "DelayTimeMs": 0,
   "WarmupSeconds": 2,
   "RequestTimeoutMs": 15000,

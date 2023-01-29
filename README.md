@@ -94,7 +94,7 @@ Inside a repository interface we won't need to use `async` and `await` keywords.
 
 ## WebSurge
 
-> WebSurge is a load testing tool for web applications. It is based on the `HttpClient` class and it is designed to be used in a CI/CD pipeline.
+> [West Wind WebSurge](https://websurge.west-wind.com/download) is a load testing tool for web applications. It is based on the `HttpClient` class and it is designed to be used in a CI/CD pipeline.
 
 You can see the difference between synchronous and asynchronous code by using WebSurge.
 
@@ -106,7 +106,7 @@ Code with `async` and `await` keywords:
 
 ![WebSurge - asynchronous code](./img/02_books_api_async.png)
 
-There is not much difference in this case. However, if we increase the number of concurrent users, we will see a significant difference.
+There is not much difference in this case (in fact asynchronous code seems to be a bit slower). However, if we increase the number of concurrent users, we will should see a significant difference.
 
 ## The Outer Facing Model
 
