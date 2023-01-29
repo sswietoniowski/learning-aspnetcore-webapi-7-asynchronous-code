@@ -4,7 +4,6 @@
 ### retrieve all books (synchronously)
 GET {{baseUrl}}/api/books/sync HTTP/1.1
 
-
 ### retrieve a book (synchronously)
 GET {{baseUrl}}/api/books/sync/{{bookId}} HTTP/1.1
 
