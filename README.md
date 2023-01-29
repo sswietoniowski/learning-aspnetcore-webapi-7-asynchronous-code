@@ -106,7 +106,7 @@ Code with `async` and `await` keywords:
 
 ![WebSurge - asynchronous code](./img/02_books_api_async.png)
 
-There is not much difference in this case (in fact asynchronous code seems to be a bit slower). However, if we increase the number of concurrent users, we will should see a significant difference.
+There is not much difference in this case (in fact asynchronous code seems to be a bit slower). However, if we increase the number of concurrent users, we should see a significant difference.
 
 ## The Outer Facing Model
 
