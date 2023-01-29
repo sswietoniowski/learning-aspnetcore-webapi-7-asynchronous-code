@@ -13,9 +13,9 @@ public class BooksRepository : IBooksRepository
         _context = booksDbContext ?? throw new ArgumentNullException(nameof(booksDbContext));
     }
 
-    public async Task<IEnumerable<Book>> GetBooksAsync() => await _context.Books.ToListAsync();
+    public async Task<IEnumerable<Book>> GetBooksAsync() => await _context.Books.Include(b => b.Author).ToListAsync();
 
-    public async Task<Book?> GetBookByIdAsync(Guid id) => await _context.Books.FindAsync(id);
+    public async Task<Book?> GetBookByIdAsync(Guid id) => await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
 
     public async Task CreateBookAsync(Book book)
     {
