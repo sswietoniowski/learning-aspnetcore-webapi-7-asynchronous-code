@@ -10,7 +10,7 @@ public class BooksRepository : IBooksRepository
 
     public BooksRepository(BooksDbContext booksDbContext)
     {
-        context = booksDbContext;
+        context = booksDbContext ?? throw new ArgumentNullException(nameof(booksDbContext));
     }
 
     public async Task<IEnumerable<Book>> GetBooksAsync() => await context.Books.ToListAsync();
