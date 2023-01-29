@@ -12,6 +12,8 @@ namespace Books.Api.Configurations.Extensions
             builder.Services.AddDbContext<BooksDbContext>(options => 
                 options.UseSqlite(builder.Configuration.GetConnectionString("BooksDb")));
 
+            builder.Services.AddScoped<IBooksRepository, BooksRepository>();
+
             return builder;
         }
     }
