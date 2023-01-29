@@ -22,7 +22,7 @@ public class BooksAsyncController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<BookDto>>> GetBooksAsync()
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
     {
         var books = await _repository.GetBooksAsync();
 
@@ -32,7 +32,7 @@ public class BooksAsyncController : ControllerBase
     [HttpGet("{bookId:guid}", Name = "GetBookAsync")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookDto>> GetBookAsync(Guid bookId)
+    public async Task<ActionResult<BookDto>> GetBook(Guid bookId)
     {
         var book = await _repository.GetBookByIdAsync(bookId);
 
@@ -47,7 +47,7 @@ public class BooksAsyncController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateBookAsync(BookForCreationDto bookDto)
+    public async Task<IActionResult> CreateBook(BookForCreationDto bookDto)
     {
         var book = _mapper.Map<Book>(bookDto);
         await _repository.CreateBookAsync(book);
@@ -55,14 +55,14 @@ public class BooksAsyncController : ControllerBase
 
         var bookToReturn = _mapper.Map<BookDto>(book);
 
-        return CreatedAtAction(nameof(GetBookAsync), new { bookId = bookToReturn.Id }, bookToReturn);
+        return CreatedAtAction(nameof(GetBook), new { bookId = bookToReturn.Id }, bookToReturn);
     }
 
     [HttpPut("{bookId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateBookAsync(Guid bookId, BookForUpdateDto bookDto)
+    public async Task<IActionResult> UpdateBook(Guid bookId, BookForUpdateDto bookDto)
     {
         var book = await _repository.GetBookByIdAsync(bookId);
 
