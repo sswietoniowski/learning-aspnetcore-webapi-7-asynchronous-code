@@ -91,3 +91,7 @@ Tasks are managed by a state machine (and implementation of `IAsyncStateMachine`
 It is an abstraction that reduces complexity and aims to make the code, safe for the repository implementation, persistent-agnostic and testable.
 
 Inside a repository interface we won't need to use `async` and `await` keywords. We will use them in the repository implementation. All we have to do is to return a `Task` or `Task<T>` object from the repository interface.
+
+## WebSurge
+
+> WebSurge is a load testing tool for web applications. It is based on the `HttpClient` class and it is designed to be used in a CI/CD pipeline.
