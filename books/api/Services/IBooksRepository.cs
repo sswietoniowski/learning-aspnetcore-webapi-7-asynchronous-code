@@ -1,6 +1,6 @@
 using Books.Api.Entities;
 
-namespace Books.Api.DataAccess;
+namespace Books.Api.Services;
 
 public interface IBooksRepository
 {

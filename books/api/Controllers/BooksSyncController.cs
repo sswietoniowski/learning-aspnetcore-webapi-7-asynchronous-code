@@ -1,7 +1,7 @@
 using AutoMapper;
-using Books.Api.DataAccess;
 using Books.Api.Dtos;
 using Books.Api.Entities;
+using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Api.Controller;
@@ -10,13 +10,11 @@ namespace Books.Api.Controller;
 [Route("api/books/sync")]
 public class BooksSyncController : ControllerBase
 {
-    private readonly IBooksRepository _repository;
-    private readonly IMapper _mapper;
+    private readonly IBooksService _booksService;
 
-    public BooksSyncController(IBooksRepository repository, IMapper mapper)
+    public BooksSyncController(IBooksService booksService)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _booksService = booksService ?? throw new ArgumentNullException(nameof(booksService));
     }
 
     [HttpGet]
@@ -24,9 +22,9 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<IEnumerable<BookDto>> GetBooks()
     {
-        var books = _repository.GetBooks();
+        var booksDto = _booksService.GetBooks();
 
-        return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
+        return Ok(booksDto);
     }
 
     [HttpGet("{bookId:guid}", Name = "GetBook")]
@@ -34,14 +32,9 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<BookDto> GetBook(Guid bookId)
     {
-        var book = _repository.GetBookById(bookId);
+        var bookDto = _booksService.GetBookById(bookId);
 
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(_mapper.Map<BookDto>(book));
+        return Ok(bookDto);
     }
 
     [HttpPost]
@@ -49,13 +42,9 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult CreateBook(BookForCreationDto bookDto)
     {
-        var book = _mapper.Map<Book>(bookDto);
-        _repository.CreateBook(book);
-        _repository.SaveChanges();
+        var createdBookDto = _booksService.CreateBook(bookDto);
 
-        var bookToReturn = _mapper.Map<BookDto>(book);
-
-        return CreatedAtAction(nameof(GetBook), new { bookId = bookToReturn.Id }, bookToReturn);
+        return CreatedAtAction(nameof(GetBook), new { bookId = createdBookDto.Id }, createdBookDto);
     }
 
     [HttpPut("{bookId}")]
@@ -64,18 +53,7 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult UpdateBook(Guid bookId, BookForUpdateDto bookDto)
     {
-        var book = _repository.GetBookById(bookId);
-
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        _mapper.Map(bookDto, book);
-
-        _repository.UpdateBook(book);
-
-        _repository.SaveChanges();
+        _booksService.UpdateBook(bookId, bookDto);
 
         return NoContent();
     }
@@ -86,15 +64,7 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult DeleteBook(Guid bookId)
     {
-        var book = _repository.GetBookById(bookId);
-
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        _repository.DeleteBook(book);
-        _repository.SaveChanges();
+        _booksService.DeleteBook(bookId);
 
         return NoContent();
     }

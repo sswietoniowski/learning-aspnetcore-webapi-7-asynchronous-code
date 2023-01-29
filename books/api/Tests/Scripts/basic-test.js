@@ -1,5 +1,4 @@
 import http from 'k6/http';
-import { sleep } from 'k6';
 
 const baseUrl = 'http://localhost:5000';
 const bookId = 'c0a80121-48aa-48b0-8c0c-927b1f8eac2c';

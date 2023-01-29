@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using Books.Api.Configurations.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Api.Configurations.Middleware;
@@ -32,6 +33,14 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         var stackTrace = string.Empty;
 
         // here you can handle specific exceptions and return a specific status code
+        switch (exception)
+        {
+            case NotFoundApiException:
+                statusCode = HttpStatusCode.NotFound;
+                message = exception.Message;
+                stackTrace = exception.StackTrace;
+                break;
+        }
 
         _logger.LogError(exception, $"An error occurred: {exception.Message}");
 

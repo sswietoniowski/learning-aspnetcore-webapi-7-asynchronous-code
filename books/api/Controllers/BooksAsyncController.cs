@@ -1,7 +1,7 @@
 using AutoMapper;
-using Books.Api.DataAccess;
 using Books.Api.Dtos;
 using Books.Api.Entities;
+using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Api.Controller;
@@ -10,13 +10,11 @@ namespace Books.Api.Controller;
 [Route("api/books/async")]
 public class BooksAsyncController : ControllerBase
 {
-    private readonly IBooksRepository _repository;
-    private readonly IMapper _mapper;
+    private readonly IBooksService _booksService;
 
-    public BooksAsyncController(IBooksRepository repository, IMapper mapper)
+    public BooksAsyncController(IBooksService booksService)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _booksService = booksService ?? throw new ArgumentNullException(nameof(booksService));
     }
 
     [HttpGet]
@@ -24,9 +22,9 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
     {
-        var books = await _repository.GetBooksAsync();
+        var booksDto = await _booksService.GetBooksAsync();
 
-        return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
+        return Ok(booksDto);
     }
 
     [HttpGet("{bookId:guid}", Name = "GetBookAsync")]
@@ -34,14 +32,9 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<BookDto>> GetBook(Guid bookId)
     {
-        var book = await _repository.GetBookByIdAsync(bookId);
+        var bookDto = await _booksService.GetBookByIdAsync(bookId);
 
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(_mapper.Map<BookDto>(book));
+        return Ok(bookDto);
     }
 
     [HttpPost]
@@ -49,13 +42,9 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateBook(BookForCreationDto bookDto)
     {
-        var book = _mapper.Map<Book>(bookDto);
-        await _repository.CreateBookAsync(book);
-        await _repository.SaveChangesAsync();
+        var createdBookDto = await _booksService.CreateBookAsync(bookDto);
 
-        var bookToReturn = _mapper.Map<BookDto>(book);
-
-        return CreatedAtAction(nameof(GetBook), new { bookId = bookToReturn.Id }, bookToReturn);
+        return CreatedAtAction(nameof(GetBook), new { bookId = createdBookDto.Id }, createdBookDto);
     }
 
     [HttpPut("{bookId}")]
@@ -64,18 +53,7 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateBook(Guid bookId, BookForUpdateDto bookDto)
     {
-        var book = await _repository.GetBookByIdAsync(bookId);
-
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        _mapper.Map(bookDto, book);
-
-        _repository.UpdateBook(book);
-
-        await _repository.SaveChangesAsync();
+        await _booksService.UpdateBookAsync(bookId, bookDto);
 
         return NoContent();
     }
@@ -86,15 +64,7 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteBook(Guid bookId)
     {
-        var book = await _repository.GetBookByIdAsync(bookId);
-
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        await _repository.DeleteBookAsync(book);
-        await _repository.SaveChangesAsync();
+        await _booksService.DeleteBookAsync(bookId);
 
         return NoContent();
     }

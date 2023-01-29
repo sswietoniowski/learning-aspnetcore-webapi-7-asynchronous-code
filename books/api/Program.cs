@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Throttle the thread pool (set available threads to amount of processors)
 ThreadPool.SetMaxThreads(Environment.ProcessorCount, Environment.ProcessorCount);
 
+builder.AddLogging();
 builder.AddPersistence();
 builder.AddMapper();
 builder.AddGlobalErrorHandler();
