@@ -29,7 +29,7 @@ public class BooksAsyncController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
     }
 
-    [HttpGet("{bookId:guid}", Name = "GetBookAsync")]
+    [HttpGet("{bookId:guid}", Name = "GetBook")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<BookDto>> GetBook(Guid bookId)
