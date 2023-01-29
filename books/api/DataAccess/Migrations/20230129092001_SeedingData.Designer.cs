@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Books.Api.DataAccess.Data.Migrations
+namespace Books.Api.DataAccess.Migrations
 {
     [DbContext(typeof(BooksDbContext))]
-    [Migration("20230129091707_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230129092001_SeedingData")]
+    partial class SeedingData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,20 @@ namespace Books.Api.DataAccess.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c0a80121-48aa-48b0-8c0c-927b1f8eac2f"),
+                            FirstName = "Stephen",
+                            LastName = "King"
+                        },
+                        new
+                        {
+                            Id = new Guid("c0a80121-48aa-48b0-8c0c-927b1f8eac2e"),
+                            FirstName = "George",
+                            LastName = "Martin"
+                        });
                 });
 
             modelBuilder.Entity("Books.Api.Entities.Book", b =>
@@ -63,6 +77,22 @@ namespace Books.Api.DataAccess.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c0a80121-48aa-48b0-8c0c-927b1f8eac2d"),
+                            AuthorId = new Guid("c0a80121-48aa-48b0-8c0c-927b1f8eac2f"),
+                            Description = "A horror novel about an evil hotel.",
+                            Title = "The Shining"
+                        },
+                        new
+                        {
+                            Id = new Guid("c0a80121-48aa-48b0-8c0c-927b1f8eac2c"),
+                            AuthorId = new Guid("c0a80121-48aa-48b0-8c0c-927b1f8eac2e"),
+                            Description = "The first book in the A Song of Ice and Fire series.",
+                            Title = "A Game of Thrones"
+                        });
                 });
 
             modelBuilder.Entity("Books.Api.Entities.Book", b =>

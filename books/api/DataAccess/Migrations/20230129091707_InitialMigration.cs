@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Books.Api.DataAccess.Data.Migrations
+namespace Books.Api.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
