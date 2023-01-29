@@ -100,13 +100,27 @@ You can see the difference between synchronous and asynchronous code by using We
 
 Code without `async` and `await` keywords:
 
-![WebSurge - synchronous code](./img/01_books_api_sync.PNG)
+![WebSurge - synchronous code](./img/01_books_api_sync_websurge.png)
 
 Code with `async` and `await` keywords:
 
-![WebSurge - asynchronous code](./img/02_books_api_async.png)
+![WebSurge - asynchronous code](./img/02_books_api_async_websurge.png)
 
 There is not much difference in this case (in fact asynchronous code seems to be a bit slower). However, if we increase the number of concurrent users, we should see a significant difference.
+
+## k6
+
+As an alternative to WebSurge we can use [k6](https://k6.io/).
+
+Good description how it can be used can be found [here](https://code-maze.com/aspnetcore-performance-testing-with-k6/).
+
+Results for synchronous code:
+
+![k6 - synchronous code](./img/03_books_api_sync_k6.png)
+
+Results for asynchronous code:
+
+![k6 - asynchronous code](./img/04_books_api_async_k6.png)
 
 ## The Outer Facing Model
 
