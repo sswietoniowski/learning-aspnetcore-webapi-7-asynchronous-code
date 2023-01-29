@@ -118,3 +118,5 @@ To represent the resource data type we can use:
 
 - model classes (DTOs) - statically typed approach,
 - dynamic objects (anonymous objects, ExpandoObject) - dynamically typed approach.
+
+Booth approaches require a mapping in controller actions (often implemented with `Automapper`), we can use instead a reusable `IAsyncResultFilter`.
