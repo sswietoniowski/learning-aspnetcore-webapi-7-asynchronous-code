@@ -87,3 +87,5 @@ Tasks are managed by a state machine (and implementation of `IAsyncStateMachine`
 ## The Repository Pattern
 
 > The repository pattern is a design pattern that is used to abstract the data access layer of an application. It is based on the repository interface and the repository implementation. The repository interface defines the operations that can be performed on the data. The repository implementation implements the repository interface and performs the actual data access operations.
+
+It is an abstraction that reduces complexity and aims to make the code, safe for the repository implementation, persistent-agnostic and testable.
