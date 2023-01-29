@@ -6,25 +6,25 @@ namespace Books.Api.Services;
 
 public class BooksRepository : IBooksRepository
 {
-    private readonly BooksDbContext context;
+    private readonly BooksDbContext _context;
 
     public BooksRepository(BooksDbContext booksDbContext)
     {
-        context = booksDbContext ?? throw new ArgumentNullException(nameof(booksDbContext));
+        _context = booksDbContext ?? throw new ArgumentNullException(nameof(booksDbContext));
     }
 
-    public async Task<IEnumerable<Book>> GetBooksAsync() => await context.Books.ToListAsync();
+    public async Task<IEnumerable<Book>> GetBooksAsync() => await _context.Books.ToListAsync();
 
-    public async Task<Book?> GetBookByIdAsync(Guid id) => await context.Books.FindAsync(id);
+    public async Task<Book?> GetBookByIdAsync(Guid id) => await _context.Books.FindAsync(id);
 
     public async Task CreateBookAsync(Book book)
     {
-        await context.Books.AddAsync(book);
+        await _context.Books.AddAsync(book);
     }
 
     public void UpdateBook(Book book)
     {
-        context.Books.Update(book);
+        _context.Books.Update(book);
     }
 
     public async Task DeleteBookAsync(Guid id)
@@ -33,9 +33,9 @@ public class BooksRepository : IBooksRepository
 
         if (book is not null)
         {
-            context.Books.Remove(book);
+            _context.Books.Remove(book);
         }
     }
 
-    public async Task SaveChangesAsync() => await context.SaveChangesAsync();    
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();    
 }
