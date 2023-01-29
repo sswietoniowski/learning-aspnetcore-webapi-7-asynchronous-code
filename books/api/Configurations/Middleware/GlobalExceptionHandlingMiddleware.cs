@@ -43,7 +43,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         }
 
         _logger.LogError(exception, $"An error occurred: {exception.Message}");
-
+        
         ProblemDetails problemDetails = new()
         {
             Status = (int)statusCode,
