@@ -27,13 +27,13 @@ public class BooksRepository : IBooksRepository
         _context.Books.Update(book);
     }
 
-    public async Task DeleteBookAsync(Guid id)
+    public async Task DeleteBookAsync(Book book)
     {
-        var book = await GetBookByIdAsync(id);
+        var bookToBeDeleted = await GetBookByIdAsync(book.Id);
 
-        if (book is not null)
+        if (bookToBeDeleted is not null)
         {
-            _context.Books.Remove(book);
+            _context.Books.Remove(bookToBeDeleted);
         }
     }
 
@@ -48,13 +48,13 @@ public class BooksRepository : IBooksRepository
         _context.Books.Add(book);
     }
 
-    public void DeleteBook(Guid id)
+    public void DeleteBook(Book book)
     {
-        var book = GetBookById(id);
+        var bookToBeDeleted = GetBookById(book.Id);
 
-        if (book is not null)
+        if (bookToBeDeleted is not null)
         {
-            _context.Books.Remove(book);
+            _context.Books.Remove(bookToBeDeleted);
         }
     }
 

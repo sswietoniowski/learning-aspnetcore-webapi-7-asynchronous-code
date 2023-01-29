@@ -11,8 +11,8 @@ public interface IBooksRepository
     void CreateBook(Book book);
     Task CreateBookAsync(Book book);
     void UpdateBook(Book book);
-    void DeleteBook(Guid id);
-    Task DeleteBookAsync(Guid id);
+    void DeleteBook(Book book);
+    Task DeleteBookAsync(Book book);
     void SaveChanges();
     Task SaveChangesAsync();
 }

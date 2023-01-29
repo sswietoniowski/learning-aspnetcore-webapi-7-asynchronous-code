@@ -15,10 +15,12 @@ public class Author
     [MaxLength(128)]
     public string LastName { get; set; }
 
+    public string Name => $"{FirstName} {LastName}";
+
     public Author(Guid Id, string FirstName, string LastName)
     {
         this.Id = Id;
         this.FirstName = FirstName;
         this.LastName = LastName;
-    }
+    }    
 }
