@@ -35,6 +35,10 @@ public async Task<string> GetAsync(string url)
 }
 ```
 
+Be aware that `async` and `await` are the right way to go, but you should not use `Task.Result` or `Task.Wait` methods.
+
+They are blocking and they can lead to deadlocks (not necessarily true these days, but blocking would be a problem still). More on that [here](https://tooslowexception.com/the-danger-of-asyncawait-and-result-in-one-picture/).
+
 ## EAP
 
 > The EAP is the legacy pattern for asynchronous programming in .NET. It is based on events. The `XXXCompleted` events are raised when an asynchronous operation completes. The `XXXCompletedEventArgs` class contains the result of the asynchronous operation. The `XXXAsync` methods start an asynchronous operation.
@@ -107,6 +111,10 @@ Code with `async` and `await` keywords:
 ![WebSurge - asynchronous code](./img/02_books_api_async_websurge.png)
 
 There is not much difference in this case (in fact asynchronous code seems to be a bit slower). However, if we increase the number of concurrent users, we should see a significant difference.
+
+We can tweak the results (don't do that on a production system unless you know what you're doing :-)) by changing `Thread Pool` settings.
+
+More on that [here](https://procodeguide.com/asp-net-core/scale-aspnet-core-application-thread/).
 
 ## k6
 

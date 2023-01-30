@@ -5,6 +5,7 @@ using Polly;
 var builder = WebApplication.CreateBuilder(args);
 
 // Throttle the thread pool (set available threads to amount of processors)
+// WARNING! THIS SETTINGS ARE HERE ONLY FOR DEMONSTRATION PURPOSES
 ThreadPool.SetMaxThreads(Environment.ProcessorCount, Environment.ProcessorCount);
 
 builder.AddLogging();
