@@ -110,3 +110,6 @@ Content-Type: application/json
   "3e0de5b1-af7c-4dd7-9ad7-b594ede0d80e",
   "62f6d826-22ec-47c3-8a33-2bacfda3f34a"
 ]
+
+### retrieve books at bulk (well ... for known ids)
+GET {{baseUrl}}/api/books/bulk/(c0a80121-48aa-48b0-8c0c-927b1f8eac2c,c0a80121-48aa-48b0-8c0c-927b1f8eac2d) HTTP/1.1
