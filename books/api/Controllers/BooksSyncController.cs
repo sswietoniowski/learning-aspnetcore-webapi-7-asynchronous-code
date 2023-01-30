@@ -41,7 +41,7 @@ public class BooksSyncController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateBook(BookForCreationDto bookDto)
+    public IActionResult CreateBook([FromBody] BookForCreationDto bookDto)
     {
         var createdBookDto = _booksService.CreateBook(bookDto);
 
@@ -52,7 +52,7 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateBook(Guid bookId, BookForUpdateDto bookDto)
+    public IActionResult UpdateBook(Guid bookId, [FromBody] BookForUpdateDto bookDto)
     {
         _booksService.UpdateBook(bookId, bookDto);
 

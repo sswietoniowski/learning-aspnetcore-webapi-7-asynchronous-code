@@ -45,7 +45,7 @@ public class BooksAsyncController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateBook(BookForCreationDto bookDto)
+    public async Task<IActionResult> CreateBook([FromBody] BookForCreationDto bookDto)
     {
         var createdBookDto = await _booksService.CreateBookAsync(bookDto);
 
@@ -56,7 +56,7 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateBook(Guid bookId, BookForUpdateDto bookDto)
+    public async Task<IActionResult> UpdateBook(Guid bookId, [FromBody] BookForUpdateDto bookDto)
     {
         await _booksService.UpdateBookAsync(bookId, bookDto);
 
