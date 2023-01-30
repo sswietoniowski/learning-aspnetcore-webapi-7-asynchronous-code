@@ -45,7 +45,7 @@ public class BooksBulkController : ControllerBase
     {
         var (createdBookIds, createdBookDtos) = await _booksService.CreateBooksAsync(bookDtos);
     
-        return CreatedAtRoute("GetBooksCollection", new { bookIds = "(" + createdBookIds + ")" }, createdBookDtos);
+        return CreatedAtRoute("GetBooksCollection", new { bookIds = createdBookIds }, createdBookDtos);
     }
 
     [HttpPut]
