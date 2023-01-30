@@ -8,7 +8,7 @@ public class BookForCreationDto
     [MaxLength(512)]
     public string Title { get; set; } = string.Empty;
     [MaxLength(2048)]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
     [Required]
     public Guid AuthorId { get; set; }
 }
@@ -21,7 +21,7 @@ public class BookDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
     public Guid AuthorId { get; set; }
     public string Author { get; set; } = string.Empty;
 
