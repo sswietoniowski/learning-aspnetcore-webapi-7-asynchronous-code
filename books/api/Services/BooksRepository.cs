@@ -29,19 +29,9 @@ public class BooksRepository : IBooksRepository
         _context.Books.Add(book);
     }
 
-    public void CreateBooks(IEnumerable<Book> books)
-    {
-        _context.Books.AddRange(books);
-    }
-
     public void UpdateBook(Book book)
     {
         _context.Books.Update(book);
-    }
-
-    public void UpdateBooks(IEnumerable<Book> books)
-    {
-        _context.Books.UpdateRange(books);
     }
 
     public void DeleteBook(Book book)
@@ -62,13 +52,6 @@ public class BooksRepository : IBooksRepository
         {
             _context.Books.Remove(bookToBeDeleted);
         }
-    }
-
-    public async Task DeleteBooksAsync(IEnumerable<Book> books)
-    {
-        var booksToBeDeleted = await _context.Books.Where(b => books.Select(b => b.Id).Contains(b.Id)).ToListAsync();
-        
-        _context.Books.RemoveRange(books);
     }
 
     public bool SaveChanges() => _context.SaveChanges() > 0; // true if one or more entities were changed

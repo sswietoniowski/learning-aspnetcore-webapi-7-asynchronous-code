@@ -74,8 +74,12 @@ public class BooksService : IBooksService
 
     public async Task CreateBooksAsync(IEnumerable<BookForCreationDto> bookDtos)
     {
-        var books = _mapper.Map<IEnumerable<Book>>(bookDtos);
-        _repository.CreateBooks(books);        
+        foreach (var bookDto in bookDtos)
+        {
+            var book = _mapper.Map<Book>(bookDto);
+            _repository.CreateBook(book);
+        }
+
         await _repository.SaveChangesAsync();
     }
 
@@ -112,8 +116,6 @@ public class BooksService : IBooksService
 
     public async Task UpdateBooksAsync(IEnumerable<(Guid, BookForUpdateDto)> bookDtos)
     {
-        var books = new List<Book>();
-
         foreach (var (bookId, bookDto) in bookDtos)
         {
             var book = await _repository.GetBookByIdAsync(bookId);
@@ -125,10 +127,9 @@ public class BooksService : IBooksService
 
             _mapper.Map(bookDto, book);
 
-            books.Add(book);
+            _repository.UpdateBook(book);            
         }
 
-        _repository.UpdateBooks(books);
         await _repository.SaveChangesAsync();
     }
 
@@ -160,8 +161,6 @@ public class BooksService : IBooksService
 
     public async Task DeleteBooksAsync(IEnumerable<Guid> bookIds)
     {
-        var books = new List<Book>();
-
         foreach (var bookId in bookIds)
         {
             var book = await _repository.GetBookByIdAsync(bookId);
@@ -171,10 +170,9 @@ public class BooksService : IBooksService
                 throw new NotFoundApiException(nameof(BookDto), bookId.ToString());
             }
 
-            books.Add(book);
+            await _repository.DeleteBookAsync(book);
         }
-
-        await _repository.DeleteBooksAsync(books);
+        
         await _repository.SaveChangesAsync();
     }
 }
