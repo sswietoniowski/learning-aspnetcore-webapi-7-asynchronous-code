@@ -18,7 +18,7 @@ public class BooksSyncController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]        
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<IEnumerable<BookDto>> GetBooks()
     {
@@ -29,6 +29,7 @@ public class BooksSyncController : ControllerBase
 
     [HttpGet("{bookId:guid}", Name = "GetBook")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<BookDto> GetBook(Guid bookId)
     {
