@@ -18,26 +18,32 @@ public class BooksBulkController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateBooks([FromBody] IEnumerable<BookForCreationDto> booksDto)
+    public async Task<IActionResult> CreateBooks([FromBody] IEnumerable<BookForCreationDto> booksDto)
     {
-        throw new NotImplementedException();
+        await _booksService.CreateBooksAsync(booksDto);
+
+        return NoContent();
     }
 
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateBooks([FromBody] IEnumerable<BookForUpdateDto> booksDto)
+    public async Task<IActionResult> UpdateBooks([FromBody] IEnumerable<(Guid, BookForUpdateDto)> booksDto)
     {
-        throw new NotImplementedException();
+        await _booksService.UpdateBooksAsync(booksDto);
+
+        return NoContent();
     }
 
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult DeleteBooks([FromBody] IEnumerable<Guid> bookIds)
+    public async Task<IActionResult> DeleteBooks([FromBody] IEnumerable<Guid> bookIds)
     {
-        throw new NotImplementedException();
+        await _booksService.DeleteBooksAsync(bookIds);
+
+        return NoContent();
     }
 }

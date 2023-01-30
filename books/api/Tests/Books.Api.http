@@ -65,3 +65,20 @@ DELETE {{baseUrl}}/api/books/sync/{{bookId}} HTTP/1.1
 
 ### delete a book (asynchronously)
 DELETE {{baseUrl}}/api/books/async/{{bookId}} HTTP/1.1
+
+### add books at bulk (asynchronously)
+POST {{baseUrl}}/api/books/async/bulk HTTP/1.1
+Content-Type: application/json
+
+[
+  {
+    "title": "A Clash of Kings",
+    "description": "The second book in the A Song of Ice and Fire series.",
+    "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
+  },
+  {
+    "title": "A Storm of Swords",
+    "description": "The third book in the A Song of Ice and Fire series.",
+    "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
+  }
+]
