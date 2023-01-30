@@ -12,6 +12,6 @@ public interface IBooksRepository
     void UpdateBook(Book book);
     void DeleteBook(Book book);
     Task DeleteBookAsync(Book book);
-    void SaveChanges();
-    Task SaveChangesAsync();
+    bool SaveChanges();
+    Task<bool> SaveChangesAsync();
 }

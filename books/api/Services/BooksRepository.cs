@@ -54,7 +54,7 @@ public class BooksRepository : IBooksRepository
         }
     }
 
-    public void SaveChanges() => _context.SaveChanges();
+    public bool SaveChanges() => _context.SaveChanges() > 0; // true if one or more entities were changed
 
-    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+    public async Task<bool> SaveChangesAsync() => await _context.SaveChangesAsync() > 0; // true if one or more entities were changed
 }
