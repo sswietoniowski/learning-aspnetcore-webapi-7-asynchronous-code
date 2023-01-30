@@ -1,6 +1,4 @@
-using AutoMapper;
 using Books.Api.Dtos;
-using Books.Api.Entities;
 using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
