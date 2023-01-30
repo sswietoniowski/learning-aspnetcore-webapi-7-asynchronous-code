@@ -1,4 +1,5 @@
 using AutoMapper;
+using Books.Api.Configurations.Middleware.Filters;
 using Books.Api.Dtos;
 using Books.Api.Entities;
 using Books.Api.Services;
@@ -31,6 +32,9 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    // we could use [BookResultFilter] here, except that we want to DI the logger into the filter
+    // that is why we are using syntax below
+    [TypeFilter(typeof(BookResultFilterAttribute))]
     public async Task<ActionResult<BookDto>> GetBook(Guid bookId)
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
