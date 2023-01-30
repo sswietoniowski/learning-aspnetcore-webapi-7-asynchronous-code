@@ -10,7 +10,7 @@ public class BookProfile : Profile
     {
         CreateMap<Book, BookDto>()
             .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.Name));
-        CreateMap<BookForCreationDto, Book>();
+        CreateMap<BookForCreationDto, Book>().ReverseMap();
         CreateMap<BookForUpdateDto, Book>();
     }
 }

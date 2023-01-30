@@ -47,9 +47,9 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateBook([FromBody] BookForCreationDto bookDto)
     {
-        var createdBookDto = await _booksService.CreateBookAsync(bookDto);
+        var (bookId, createdBookDto) = await _booksService.CreateBookAsync(bookDto);
 
-        return CreatedAtAction(nameof(GetBook), new { bookId = createdBookDto.Id }, createdBookDto);
+        return CreatedAtAction(nameof(GetBook), new { bookId = bookId }, createdBookDto);
     }
 
     [HttpPut("{bookId}")]

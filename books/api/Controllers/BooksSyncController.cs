@@ -43,9 +43,9 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult CreateBook([FromBody] BookForCreationDto bookDto)
     {
-        var createdBookDto = _booksService.CreateBook(bookDto);
+        var (bookId, createdBookDto) = _booksService.CreateBook(bookDto);
 
-        return CreatedAtAction(nameof(GetBook), new { bookId = createdBookDto.Id }, createdBookDto);
+        return CreatedAtAction(nameof(GetBook), new { bookId = bookId }, createdBookDto);
     }
 
     [HttpPut("{bookId}")]

@@ -54,22 +54,22 @@ public class BooksService : IBooksService
         return _mapper.Map<BookDto>(book);
     }
 
-    public BookDto CreateBook(BookForCreationDto bookDto)
+    public (Guid, BookForCreationDto) CreateBook(BookForCreationDto bookDto)
     {
         var book = _mapper.Map<Book>(bookDto);
         _repository.CreateBook(book);
         _repository.SaveChanges();
 
-        return _mapper.Map<BookDto>(book);
+        return (book.Id, _mapper.Map<BookForCreationDto>(book));
     }
 
-    public async Task<BookDto> CreateBookAsync(BookForCreationDto bookDto)
+    public async Task<(Guid, BookForCreationDto)> CreateBookAsync(BookForCreationDto bookDto)
     {
         var book = _mapper.Map<Book>(bookDto);
         _repository.CreateBook(book);
         await _repository.SaveChangesAsync();
 
-        return _mapper.Map<BookDto>(book);
+        return (book.Id, _mapper.Map<BookForCreationDto>(book));
     }
 
     public void UpdateBook(Guid bookId, BookForUpdateDto bookDto)
