@@ -5,16 +5,16 @@ using Books.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-public class BookResultFilterAttribute : IAsyncResultFilter 
+public class BookResultFilter : IAsyncResultFilter 
 // to reduce overhead, we are implementing IAsyncResultFilter instead of inheriting from ActionFilterAttribute and overriding OnResultExecuting
 {
-    private readonly ILogger<BookResultFilterAttribute> _logger;
+    private readonly ILogger<BookResultFilter> _logger;
 
-    public BookResultFilterAttribute(ILogger<BookResultFilterAttribute> logger) => _logger = logger;
+    public BookResultFilter(ILogger<BookResultFilter> logger) => _logger = logger;
 
     public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
     {
-        _logger.LogInformation($"Called filter: {nameof(BookResultFilterAttribute)}");
+        _logger.LogInformation($"Called filter: {nameof(BookResultFilter)}");
 
         var resultFromAction = context.Result as ObjectResult;
 

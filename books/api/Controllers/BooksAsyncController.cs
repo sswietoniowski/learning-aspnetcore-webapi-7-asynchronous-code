@@ -34,7 +34,7 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     // we could use [BookResultFilter] here, except that we want to DI the logger into the filter
     // that is why we are using syntax below
-    [TypeFilter(typeof(BookResultFilterAttribute))]
+    [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<BookDto>> GetBook(Guid bookId)
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
