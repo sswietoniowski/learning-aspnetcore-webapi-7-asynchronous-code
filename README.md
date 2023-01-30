@@ -234,7 +234,7 @@ public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
 
 > Bulk operations are operations that are performed on a collection of items. They are useful for operations that need to be performed on many items, such as creating, updating, or deleting.
 
-Sometimes while performing bulk operations we might want to return a different status code than `200 OK`. For example, if we want to return `201 Created` for each created item. That is a little bit tricky and in that
+Sometimes while performing bulk operations we might want to return a different status code than `200 OK`. For example, we want to return `201 Created` for each created item. That is a little bit tricky and in that
 situation we might find useful model binding.
 
 ## Model Binding
