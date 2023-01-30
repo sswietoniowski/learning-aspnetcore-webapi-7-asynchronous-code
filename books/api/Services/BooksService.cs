@@ -30,6 +30,13 @@ public class BooksService : IBooksService
         return _mapper.Map<IEnumerable<BookDto>>(books);
     }
 
+    public async Task<IEnumerable<BookDto>> GetBooksAsync(IEnumerable<Guid> bookIds)
+    {
+        var books = await _repository.GetBooksAsync(bookIds);
+
+        return _mapper.Map<IEnumerable<BookDto>>(books);
+    }
+
     public BookDto GetBookById(Guid bookId)
     {
         var book = _repository.GetBookById(bookId);
@@ -72,15 +79,24 @@ public class BooksService : IBooksService
         return (book.Id, _mapper.Map<BookForCreationDto>(book));
     }
 
-    public async Task CreateBooksAsync(IEnumerable<BookForCreationDto> bookDtos)
+    public async Task<(string, IEnumerable<BookDto>)> CreateBooksAsync(IEnumerable<BookForCreationDto> bookDtos)
     {
+        // TODO: think about better way to do this
+
+        var books = new List<Book>();
         foreach (var bookDto in bookDtos)
         {
             var book = _mapper.Map<Book>(bookDto);
+            books.Add(book);
             _repository.CreateBook(book);
         }
 
         await _repository.SaveChangesAsync();
+
+        var booksToReturn = _mapper.Map<IEnumerable<BookDto>>(books);
+        var bookIds = string.Join(",", booksToReturn.Select(b => b.Id));
+
+        return (bookIds, booksToReturn);
     }
 
     public void UpdateBook(Guid bookId, BookForUpdateDto bookDto)

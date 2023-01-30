@@ -1,4 +1,5 @@
 using Books.Api.Dtos;
+using Books.Api.Helpers;
 using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,23 +21,41 @@ public class BooksBulkController : ControllerBase
         _booksService = booksService ?? throw new ArgumentNullException(nameof(booksService));
     }
 
+    [HttpGet("({bookIds})", Name = "GetBooksCollection")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetBooksAsync(
+        [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> bookIds)
+    {
+        var bookDtos = await _booksService.GetBooksAsync(bookIds);
+
+        if (bookDtos.Count() != bookIds.Count())
+        {
+            return NotFound();
+        }
+
+        return Ok(bookDtos);
+    }
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateBooks([FromBody] IEnumerable<BookForCreationDto> booksDto)
+    public async Task<IActionResult> CreateBooks([FromBody] IEnumerable<BookForCreationDto> bookDtos)
     {
-        await _booksService.CreateBooksAsync(booksDto);
+        var (createdBookIds, createdBookDtos) = await _booksService.CreateBooksAsync(bookDtos);
 
-        return NoContent();
+    
+        return CreatedAtRoute("GetBooksCollection", new { createdBookIds }, createdBookDtos);
     }
 
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateBooks([FromBody] IEnumerable<BookForBulkUpdateDto> booksDto)
+    public async Task<IActionResult> UpdateBooks([FromBody] IEnumerable<BookForBulkUpdateDto> bookDtos)
     {
-        await _booksService.UpdateBooksAsync(booksDto);
+        await _booksService.UpdateBooksAsync(bookDtos);
 
         return NoContent();
     }

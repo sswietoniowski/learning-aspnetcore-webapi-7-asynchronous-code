@@ -229,3 +229,75 @@ public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
     return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
 }
 ```
+
+## Bulk Operations
+
+> Bulk operations are operations that are performed on a collection of items. They are useful for operations that need to be performed on many items, such as creating, updating, or deleting.
+
+Sometimes while performing bulk operations we might want to return a different status code than `200 OK`. For example, if we want to return `201 Created` for each created item. That is a little bit tricky and in that
+situation we might find useful model binding.
+
+## Model Binding
+
+> Model binding is the process of mapping data from HTTP requests to action method parameters. It uses model binders to retrieve data for each parameter.
+
+To create a custom model binder we have to implement `IModelBinder` interface.
+
+Example (for an array of strings):
+
+```csharp
+public class ArrayModelBinder : IModelBinder
+{
+    public Task BindModelAsync(ModelBindingContext bindingContext)
+    {
+        // our binder works only on enumerable types
+        if (!bindingContext.ModelMetadata.IsEnumerableType)
+        {
+            bindingContext.Result = ModelBindingResult.Failed();
+            return Task.CompletedTask;
+        }
+
+        // get the inputted value through the value provider
+        var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName).ToString();
+
+        // if that value is null or whitespace, we return null
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            bindingContext.Result = ModelBindingResult.Success(null);
+            return Task.CompletedTask;
+        }
+
+        // the value isn't null or whitespace, and the type of the model is enumerable
+        // get the enumerable's type, and a converter
+        var elementType = bindingContext.ModelType.GetTypeInfo().GenericTypeArguments[0];
+        var converter = TypeDescriptor.GetConverter(elementType);
+
+        // convert each item in the value list to the enumerable type
+        var values = value.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => converter.ConvertFromString(x.Trim()))
+            .ToArray();
+
+        // create an array of that type, and set it as the Model value
+        var typedValues = Array.CreateInstance(elementType, values.Length);
+        values.CopyTo(typedValues, 0);
+        bindingContext.Model = typedValues;
+
+        // return a successful result, passing in the Model
+        bindingContext.Result = ModelBindingResult.Success(bindingContext.Model);
+        return Task.CompletedTask;
+    }
+}
+```
+
+To use the model binder we have to register it.
+
+Example:
+
+```csharp
+[HttpGet("({ids})", Name = "GetBooksCollection")]
+public async Task<IActionResult> GetBooks(
+    [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> bookIds)
+{
+    // ...
+}
+```

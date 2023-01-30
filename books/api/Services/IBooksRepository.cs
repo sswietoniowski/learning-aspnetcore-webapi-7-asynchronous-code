@@ -6,6 +6,7 @@ public interface IBooksRepository
 {
     IEnumerable<Book> GetBooks();
     Task<IEnumerable<Book>> GetBooksAsync();
+    Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> bookIds);
     Book? GetBookById(Guid id);
     Task<Book?> GetBookByIdAsync(Guid id);
     void CreateBook(Book book);

@@ -19,6 +19,9 @@ public class BooksRepository : IBooksRepository
     public async Task<IEnumerable<Book>> GetBooksAsync() => 
         await _context.Books.AsNoTracking().Include(b => b.Author).ToListAsync();
 
+    public async Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> bookIds) =>
+        await _context.Books.AsNoTracking().Include(b => b.Author).Where(b => bookIds.Contains(b.Id)).ToListAsync();
+
     public Book? GetBookById(Guid id) => 
         _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);
 
