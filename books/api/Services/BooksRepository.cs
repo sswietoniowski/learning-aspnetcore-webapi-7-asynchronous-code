@@ -13,39 +13,25 @@ public class BooksRepository : IBooksRepository
         _context = booksDbContext ?? throw new ArgumentNullException(nameof(booksDbContext));
     }
 
+    public IEnumerable<Book> GetBooks() => _context.Books.Include(b => b.Author).ToList();
+
     public async Task<IEnumerable<Book>> GetBooksAsync() => await _context.Books.Include(b => b.Author).ToListAsync();
 
-    public async Task<Book?> GetBookByIdAsync(Guid id) => await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
+    public Book? GetBookById(Guid id) => _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);
 
-    public async Task CreateBookAsync(Book book)
+    public async Task<Book?> GetBookByIdAsync(Guid id) => await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
+    
+    public void CreateBook(Book book)
     {
-        await _context.Books.AddAsync(book);
+        // theoretically we could add CreateBookAsync and CreateBook methods to the interface
+        // but in reality _context.Books.AddAsync should be used only in a special occasion,
+        // for the most part _context.Books.Add should suffice
+        _context.Books.Add(book);
     }
 
     public void UpdateBook(Book book)
     {
         _context.Books.Update(book);
-    }
-
-    public async Task DeleteBookAsync(Book book)
-    {
-        var bookToBeDeleted = await GetBookByIdAsync(book.Id);
-
-        if (bookToBeDeleted is not null)
-        {
-            _context.Books.Remove(bookToBeDeleted);
-        }
-    }
-
-    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
-
-    public IEnumerable<Book> GetBooks() => _context.Books.Include(b => b.Author).ToList();
-
-    public Book? GetBookById(Guid id) => _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);
-
-    public void CreateBook(Book book)
-    {
-        _context.Books.Add(book);
     }
 
     public void DeleteBook(Book book)
@@ -58,8 +44,17 @@ public class BooksRepository : IBooksRepository
         }
     }
 
-    public void SaveChanges()
+    public async Task DeleteBookAsync(Book book)
     {
-        _context.SaveChanges();
+        var bookToBeDeleted = await GetBookByIdAsync(book.Id);
+
+        if (bookToBeDeleted is not null)
+        {
+            _context.Books.Remove(bookToBeDeleted);
+        }
     }
+
+    public void SaveChanges() => _context.SaveChanges();
+
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 }
