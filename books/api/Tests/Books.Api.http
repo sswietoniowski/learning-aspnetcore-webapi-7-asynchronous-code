@@ -1,3 +1,9 @@
+### Books API
+###
+### These tests can be executed from within Visual Studio Code, provided that the user has 
+### already installed the "REST Client" extension. That extension can be installed from this
+### link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
 @baseUrl = http://localhost:5000
 @bookId = c0a80121-48aa-48b0-8c0c-927b1f8eac2c
 
