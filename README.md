@@ -195,3 +195,24 @@ public class LogResultFilter : Attribute, IAsyncResultFilter
     }
 }
 ```
+
+Then to use the filter we have to add it to the controller:
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+[LogResultFilter]
+```
+
+or to the action:
+
+```csharp
+[HttpGet]
+[LogResultFilter]
+public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
+{
+    var books = await _bookRepository.GetBooksAsync();
+
+    return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
+}
+```
