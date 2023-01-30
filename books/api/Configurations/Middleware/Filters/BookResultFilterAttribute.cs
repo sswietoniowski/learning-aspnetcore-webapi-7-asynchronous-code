@@ -5,13 +5,14 @@ using Books.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-public class BookResultFilterAttribute : ResultFilterAttribute
+public class BookResultFilterAttribute : IAsyncResultFilter 
+// to reduce overhead, we are implementing IAsyncResultFilter instead of inheriting from ActionFilterAttribute and overriding OnResultExecuting
 {
     private readonly ILogger<BookResultFilterAttribute> _logger;
 
     public BookResultFilterAttribute(ILogger<BookResultFilterAttribute> logger) => _logger = logger;
 
-    public async override Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
+    public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
     {
         _logger.LogInformation($"Called filter: {nameof(BookResultFilterAttribute)}");
 
@@ -29,11 +30,11 @@ public class BookResultFilterAttribute : ResultFilterAttribute
         // so we could use filter to map from `Book` to `BookDto` here instead of doing that inside our
         // service - this is a matter of preference
  
-        if (resultFromAction.Value is BookDto bookDto)
+        if (resultFromAction?.Value is BookDto bookDto)
         {
             bookDto.Title = $"[FILTERED] {bookDto.Title}";
         }
-        else if (resultFromAction.Value is IEnumerable<BookDto> booksDto)
+        else if (resultFromAction?.Value is IEnumerable<BookDto> booksDto)
         {
             foreach (var b in booksDto)
             {
