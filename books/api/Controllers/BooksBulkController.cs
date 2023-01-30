@@ -1,4 +1,3 @@
-using Books.Api.Configurations.Middleware.Filters;
 using Books.Api.Dtos;
 using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
