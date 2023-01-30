@@ -216,3 +216,16 @@ public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
     return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
 }
 ```
+
+If our filter requires some dependencies we can use constructor injection, but then we have to use different syntax on our controller/action:
+
+```csharp
+[HttpGet]
+[TypeFilter(typeof(LogResultFilter))]
+public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
+{
+    var books = await _bookRepository.GetBooksAsync();
+
+    return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
+}
+```
