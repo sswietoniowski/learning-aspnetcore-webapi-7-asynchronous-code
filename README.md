@@ -156,3 +156,42 @@ Booth approaches require a mapping in controller actions (often implemented with
 > This pattern breaks up the business layer of the app into two distinct layers: the repository layer and the service layer. The repository layer is responsible for data access and the service layer is responsible for business logic (it is also this layer where outer facing models are used).
 
 This is not a design pattern, but a good practice. It is based on the repository pattern and the service pattern. Nice explanation can be found [here](https://exceptionnotfound.net/the-repository-service-pattern-with-dependency-injection-and-asp-net-core/).
+
+## Result Filters
+
+> Result filters are used to execute code after an action method has executed. Result filters are useful for tasks that need to be done after an action method has executed, such as logging or exception handling.
+
+Example:
+
+```csharp
+public class LogResultFilter : Attribute, IResultFilter
+{
+    public void OnResultExecuting(ResultExecutingContext context)
+    {
+        // do something before the action executes
+    }
+
+    public void OnResultExecuted(ResultExecutedContext context)
+    {
+        // do something after the action executes
+    }
+}
+```
+
+Result filters can be synchronous or asynchronous. If we want to use asynchronous code we have to implement `IAsyncResultFilter` interface.
+
+Example:
+
+```csharp
+public class LogResultFilter : Attribute, IAsyncResultFilter
+{
+    public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
+    {
+        // do something before the action executes
+
+        var executedContext = await next();
+
+        // do something after the action executes
+    }
+}
+```
