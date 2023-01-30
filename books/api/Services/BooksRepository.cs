@@ -13,13 +13,17 @@ public class BooksRepository : IBooksRepository
         _context = booksDbContext ?? throw new ArgumentNullException(nameof(booksDbContext));
     }
 
-    public IEnumerable<Book> GetBooks() => _context.Books.AsNoTracking().Include(b => b.Author).ToList();
+    public IEnumerable<Book> GetBooks() => 
+        _context.Books.AsNoTracking().Include(b => b.Author).ToList();
 
-    public async Task<IEnumerable<Book>> GetBooksAsync() => await _context.Books.AsNoTracking().Include(b => b.Author).ToListAsync();
+    public async Task<IEnumerable<Book>> GetBooksAsync() => 
+        await _context.Books.AsNoTracking().Include(b => b.Author).ToListAsync();
 
-    public Book? GetBookById(Guid id) => _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);
+    public Book? GetBookById(Guid id) => 
+        _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);
 
-    public async Task<Book?> GetBookByIdAsync(Guid id) => await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
+    public async Task<Book?> GetBookByIdAsync(Guid id) => 
+        await _context.Books.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
     
     public void CreateBook(Book book)
     {

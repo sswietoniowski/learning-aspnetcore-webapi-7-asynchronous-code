@@ -114,15 +114,15 @@ public class BooksService : IBooksService
         await _repository.SaveChangesAsync();
     }
 
-    public async Task UpdateBooksAsync(IEnumerable<(Guid, BookForUpdateDto)> bookDtos)
+    public async Task UpdateBooksAsync(IEnumerable<BookForBulkUpdateDto> bookDtos)
     {
-        foreach (var (bookId, bookDto) in bookDtos)
+        foreach (var bookDto in bookDtos)
         {
-            var book = await _repository.GetBookByIdAsync(bookId);
+            var book = await _repository.GetBookByIdAsync(bookDto.Id);
 
             if (book is null)
             {
-                throw new NotFoundApiException(nameof(BookDto), bookId.ToString());
+                throw new NotFoundApiException(nameof(BookDto), bookDto.Id.ToString());
             }
 
             _mapper.Map(bookDto, book);

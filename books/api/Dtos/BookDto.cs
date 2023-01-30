@@ -17,6 +17,11 @@ public class BookForUpdateDto : BookForCreationDto
 {
 }
 
+public class BookForBulkUpdateDto : BookForUpdateDto
+{
+    public Guid Id { get; set; }
+}
+
 public class BookDto
 {
     public Guid Id { get; set; }

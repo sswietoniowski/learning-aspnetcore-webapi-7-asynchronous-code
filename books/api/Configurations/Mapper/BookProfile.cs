@@ -12,5 +12,6 @@ public class BookProfile : Profile
             .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.Name));
         CreateMap<BookForCreationDto, Book>().ReverseMap();
         CreateMap<BookForUpdateDto, Book>();
+        CreateMap<BookForBulkUpdateDto, Book>();
     }
 }

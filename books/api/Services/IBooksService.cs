@@ -13,7 +13,7 @@ public interface IBooksService
     Task CreateBooksAsync(IEnumerable<BookForCreationDto> bookDtos);
     void UpdateBook(Guid bookId, BookForUpdateDto bookDto);
     Task UpdateBookAsync(Guid bookId, BookForUpdateDto bookDto);
-    Task UpdateBooksAsync(IEnumerable<(Guid, BookForUpdateDto)> bookDtos);
+    Task UpdateBooksAsync(IEnumerable<BookForBulkUpdateDto> bookDtos);
     void DeleteBook(Guid bookId);
     Task DeleteBookAsync(Guid bookId);
     Task DeleteBooksAsync(IEnumerable<Guid> bookIds);

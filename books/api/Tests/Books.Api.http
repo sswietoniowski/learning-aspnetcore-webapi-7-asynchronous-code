@@ -82,3 +82,31 @@ Content-Type: application/json
     "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
   }
 ]
+
+### update books at bulk
+PUT {{baseUrl}}/api/books/bulk HTTP/1.1
+Content-Type: application/json
+
+[
+  {
+    "id": "3e0de5b1-af7c-4dd7-9ad7-b594ede0d80e",
+    "title": "A Clash of Kings",
+    "description": "[UPDATED] The second book in the A Song of Ice and Fire series.",
+    "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
+  },
+  {
+    "id": "62f6d826-22ec-47c3-8a33-2bacfda3f34a",
+    "title": "A Storm of Swords",
+    "description": "[UPDATED] The third book in the A Song of Ice and Fire series.",
+    "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
+  }
+]
+
+### delete books at bulk
+DELETE {{baseUrl}}/api/books/bulk HTTP/1.1
+Content-Type: application/json
+
+[
+  "3e0de5b1-af7c-4dd7-9ad7-b594ede0d80e",
+  "62f6d826-22ec-47c3-8a33-2bacfda3f34a"
+]

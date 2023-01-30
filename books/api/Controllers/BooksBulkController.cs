@@ -8,6 +8,11 @@ namespace Books.Api.Controller;
 [Route("api/books/bulk")] // this route is meant to be use for bulk operations (e.g. create, update, delete)
 public class BooksBulkController : ControllerBase
 {
+    // while bulk operations might be a good idea for performance reasons, it is not necessarily a good idea 
+    // for security reasons and while bulk creation might bo OK, bulk update and bulk delete could be
+    // exploited by malicious users to delete or update data they are not supposed to, so it is up to you
+    // to decide if you want to implement bulk operations at all or to implement only some actions
+
     private readonly IBooksService _booksService;
 
     public BooksBulkController(IBooksService booksService)
@@ -29,7 +34,7 @@ public class BooksBulkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateBooks([FromBody] IEnumerable<(Guid, BookForUpdateDto)> booksDto)
+    public async Task<IActionResult> UpdateBooks([FromBody] IEnumerable<BookForBulkUpdateDto> booksDto)
     {
         await _booksService.UpdateBooksAsync(booksDto);
 
