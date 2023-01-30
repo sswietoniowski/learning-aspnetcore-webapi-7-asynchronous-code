@@ -29,6 +29,8 @@ public class BookResultFilter : IAsyncResultFilter
         // we could use filter to filter out sensitive data or to map data from one format to another,
         // so we could use filter to map from `Book` to `BookDto` here instead of doing that inside our
         // service - this is a matter of preference
+        // if we would decide to change the format of our data, we could do that like so:
+        // resultFromAction.Value = Mapper.Map<BookDto>(resultFromAction.Value);
  
         if (resultFromAction?.Value is BookDto bookDto)
         {
