@@ -66,8 +66,8 @@ DELETE {{baseUrl}}/api/books/sync/{{bookId}} HTTP/1.1
 ### delete a book (asynchronously)
 DELETE {{baseUrl}}/api/books/async/{{bookId}} HTTP/1.1
 
-### add books at bulk (asynchronously)
-POST {{baseUrl}}/api/books/async/bulk HTTP/1.1
+### add books at bulk
+POST {{baseUrl}}/api/books/bulk HTTP/1.1
 Content-Type: application/json
 
 [
