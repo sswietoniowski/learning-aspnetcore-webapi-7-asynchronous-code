@@ -303,3 +303,24 @@ public async Task<IActionResult> GetBooks(
     // ...
 }
 ```
+
+## Asynchronous Streaming
+
+> Asynchronous streaming is a way to stream data asynchronously. It is useful for streaming data from a server to a client, such as a file download.
+
+To stream data asynchronously we have to use `IAsyncEnumerable` interface.
+
+Example:
+
+```csharp
+[HttpGet("stream")]
+public async IAsyncEnumerable<BookDto> StreamBooks()
+{
+    var books = await _bookRepository.GetBooksAsync();
+
+    foreach (var book in books)
+    {
+        yield return _mapper.Map<BookDto>(book);
+    }
+}
+```
