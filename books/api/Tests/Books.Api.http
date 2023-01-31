@@ -44,7 +44,6 @@ PUT {{baseUrl}}/api/books/sync/{{bookId}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": "c0a80121-48aa-48b0-8c0c-927b1f8eac2c",
   "title": "A Game of Thrones",
   "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
 }
@@ -54,7 +53,6 @@ PUT {{baseUrl}}/api/books/async/{{bookId}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": "c0a80121-48aa-48b0-8c0c-927b1f8eac2c",
   "title": "A Game of Thrones",
   "description": "The first book in the A Song of Ice and Fire series.",
   "authorId": "c0a80121-48aa-48b0-8c0c-927b1f8eac2e"
