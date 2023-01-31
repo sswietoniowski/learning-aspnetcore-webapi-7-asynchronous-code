@@ -61,7 +61,7 @@ public class BooksSyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult DeleteBook(Guid bookId)
+    public IActionResult DeleteBook(Guid bookId)
     {
         _booksService.DeleteBook(bookId);
 

@@ -65,7 +65,7 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> DeleteBook(Guid bookId)
+    public async Task<IActionResult> DeleteBook(Guid bookId)
     {
         await _booksService.DeleteBookAsync(bookId);
 
