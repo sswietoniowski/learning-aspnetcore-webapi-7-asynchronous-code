@@ -25,7 +25,7 @@ There are three main patterns for asynchronous programming in .NET:
 
 > The TAP is the recommended pattern for asynchronous programming in .NET. It is based on the `Task` and `Task<T>` types. The `Task` type represents a single operation that does not return a value. The `Task<T>` type represents a single operation that returns a value of type `T`.
 
-Nice explanation of this concept can be found [here](https://medium.com/devtechblogs/overview-of-c-async-programming-with-thread-pools-and-task-parallel-library-7b18c9fc192d).
+Nice explanation of this concept can be found [here](https://medium.com/devtechblogs/overview-of-c-async-programming-with-thread-pools-and-task-parallel-library-7b18c9fc192d) and [here](https://cezarywalenciuk.pl/blog/programing/asynchroniczny-c--threadthreadpool-iasyncresult-task-api-i-async-i-await) (Polish).
 
 Example:
 
