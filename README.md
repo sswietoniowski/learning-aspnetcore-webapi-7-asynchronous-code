@@ -324,3 +324,10 @@ public async IAsyncEnumerable<BookDto> StreamBooks()
     }
 }
 ```
+
+`IAsyncEnumerable<T>` provides the ability to iterate over a set of values asynchronously.
+
+Since ASP.NET Core 6 `System.Text.Json` supports streaming, which, combined with `IAsyncEnumerable<T>`, can
+result in objects being streamed to the client as they are ready.
+
+To understand how async streams work please read [this](https://www.dotnetcurry.com/csharp/async-streams) article.

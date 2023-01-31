@@ -113,3 +113,9 @@ Content-Type: application/json
 
 ### retrieve books at bulk (well ... for known ids)
 GET {{baseUrl}}/api/books/bulk/(c0a80121-48aa-48b0-8c0c-927b1f8eac2c,c0a80121-48aa-48b0-8c0c-927b1f8eac2d) HTTP/1.1
+
+### retrieve books using streaming (to see the result as they are delivered open this URL in a browser)
+### 
+### http://localhost:5000/api/books/async/stream
+###
+### effect of streaming can be seen in Google Chrome but not in Firefox

@@ -9,6 +9,7 @@ public interface IBooksService
     Task<IEnumerable<BookDto>> GetBooksAsync(IEnumerable<Guid> bookIds);
     BookDto GetBookById(Guid bookId);
     Task<BookDto> GetBookByIdAsync(Guid bookId);
+    IAsyncEnumerable<BookDto> GetBooksAsAsyncEnumerable();
     (Guid, BookForCreationDto) CreateBook(BookForCreationDto bookDto);    
     Task<(Guid, BookForCreationDto)> CreateBookAsync(BookForCreationDto bookDto);
     Task<(string, IEnumerable<BookDto>)> CreateBooksAsync(IEnumerable<BookForCreationDto> bookDtos);

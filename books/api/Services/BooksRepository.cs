@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Books.Api.DataAccess;
 using Books.Api.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,9 @@ public class BooksRepository : IBooksRepository
 
     public async Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> bookIds) =>
         await _context.Books.AsNoTracking().Include(b => b.Author).Where(b => bookIds.Contains(b.Id)).ToListAsync();
+
+    public IAsyncEnumerable<Book> GetBooksAsAsyncEnumerable() =>
+        _context.Books.AsNoTracking().Include(b => b.Author).AsAsyncEnumerable<Book>();
 
     public Book? GetBookById(Guid id) => 
         _context.Books.Include(b => b.Author).FirstOrDefault(b => b.Id == id);

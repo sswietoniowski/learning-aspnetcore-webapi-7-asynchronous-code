@@ -26,6 +26,22 @@ public class BooksAsyncController : ControllerBase
         return Ok(booksDto);
     }
 
+    [HttpGet("stream")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async IAsyncEnumerable<BookDto> GetBooksAsAsyncEnumerable() 
+    {
+        const int DELAY_IN_SECONDS = 1;
+
+        await foreach (var bookDto in _booksService.GetBooksAsAsyncEnumerable())
+        {
+            // we're adding this delay just to see that streaming is working
+            await Task.Delay(TimeSpan.FromSeconds(DELAY_IN_SECONDS));
+
+            yield return bookDto;
+        }
+    }
+
     [HttpGet("{bookId:guid}", Name = "GetBookAsync")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

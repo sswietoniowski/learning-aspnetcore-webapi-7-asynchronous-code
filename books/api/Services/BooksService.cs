@@ -61,6 +61,14 @@ public class BooksService : IBooksService
         return _mapper.Map<BookDto>(book);
     }
 
+    public async IAsyncEnumerable<BookDto> GetBooksAsAsyncEnumerable()
+    {
+        await foreach (var book in _repository.GetBooksAsAsyncEnumerable())
+        {
+            yield return _mapper.Map<BookDto>(book);
+        }
+    }
+
     public (Guid, BookForCreationDto) CreateBook(BookForCreationDto bookDto)
     {
         var book = _mapper.Map<Book>(bookDto);
