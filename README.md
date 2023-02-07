@@ -6,6 +6,26 @@ Based on this course [Developing an Asynchronous ASP.NET Core 6 Web API](https:/
 
 Original course materials can be found [here](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-developing-asynchronous/exercise-files) and [here](https://github.com/KevinDockx/DevelopingAsyncWebAPIAspNetCore6).
 
+## Setup
+
+First run external covers API:
+
+```cmd
+cd .\books\external_api
+dotnet run
+cd ..
+```
+
+Then run books API:
+
+```cmd
+cd .\books\api
+dotnet run
+cd ..
+```
+
+Of course, you can use your favorite IDE to run projects :-).
+
 ## Benefits of Asynchronous Programming
 
 - **scalability** (scaling up) - asynchronous programming allows you to perform multiple operations at the same time. This can improve the scalability of your application,
