@@ -4,5 +4,5 @@ using Covers.Api.Dtos;
 
 public interface ICoversService
 {
-    Task<CoverDto> GetCoverAsync(string id);
+    Task<CoverDto> GetCoverAsync(string coverId);
 }

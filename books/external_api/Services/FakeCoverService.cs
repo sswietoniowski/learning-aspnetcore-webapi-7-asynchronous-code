@@ -4,7 +4,7 @@ namespace Covers.Api.Services;
 
 public class FakeCoversService : ICoversService
 {
-    public async Task<CoverDto> GetCoverAsync(string id)
+    public async Task<CoverDto> GetCoverAsync(string coverId)
     {
         // generate a "cover" (byte array) between 5 and 10MB
 
@@ -18,6 +18,6 @@ public class FakeCoversService : ICoversService
 
         random.NextBytes(fakeContent);
 
-        return await Task.FromResult(new CoverDto(Id: id, Content: fakeContent));
+        return await Task.FromResult(new CoverDto(Id: coverId, Content: fakeContent));
     }
 }

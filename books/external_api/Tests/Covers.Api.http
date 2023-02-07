@@ -1,0 +1,11 @@
+### Covers API
+###
+### These tests can be executed from within Visual Studio Code, provided that the user has 
+### already installed the "REST Client" extension. That extension can be installed from this
+### link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@baseUrl = http://localhost:5002
+@coverId = 1
+
+### retrieve all books (synchronously)
+GET {{baseUrl}}/api/covers/{{coverId}}?returnFault=false HTTP/1.1

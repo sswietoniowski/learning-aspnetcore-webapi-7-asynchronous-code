@@ -1,3 +1,4 @@
+using Covers.Api;
 using Covers.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// TODO: app.MapGet...
+app.UseMinimalApiEndpoints();
 
 app.Run();
