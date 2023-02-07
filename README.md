@@ -8,7 +8,7 @@ Original course materials can be found [here](https://app.pluralsight.com/librar
 
 ## Setup
 
-First run external covers API:
+First run "external" covers API:
 
 ```cmd
 cd .\books\external_api
