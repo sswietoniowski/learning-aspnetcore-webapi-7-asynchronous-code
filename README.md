@@ -20,7 +20,7 @@ Then run books API:
 
 ```cmd
 cd .\books\api
-dotnet run
+dotnet watch run
 cd ..
 ```
 
