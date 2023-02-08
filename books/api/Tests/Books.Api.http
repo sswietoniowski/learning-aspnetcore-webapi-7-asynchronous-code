@@ -117,3 +117,6 @@ GET {{baseUrl}}/api/books/bulk/(c0a80121-48aa-48b0-8c0c-927b1f8eac2c,c0a80121-48
 ### http://localhost:5000/api/books/async/stream
 ###
 ### effect of streaming can be seen in Google Chrome but not in Firefox
+
+### retrieve a book with its cover (calling external API)
+GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveBookCover=true HTTP/1.1

@@ -49,17 +49,20 @@ public class BooksAsyncController : ControllerBase
     // we could use [BookResultFilter] here, except that we want to DI the logger into the filter
     // that is why we are using syntax below
     [TypeFilter(typeof(BookResultFilter))]
-    public async Task<ActionResult<BookDto>> GetBook(Guid bookId)
+    public async Task<ActionResult<BookDto>> GetBook(Guid bookId, bool retrieveBookCover = false)
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
 
-        // here we are retrieving the cover for the book from an external API
-        var coverId = bookDto.Id.ToString();
-        var coverDto = await _booksService.GetBookCoverAsync(coverId);
-
-        if (coverDto != null)
+        if (retrieveBookCover)
         {
-            bookDto.Cover = coverDto;
+            // here we are retrieving the cover for the book from an external API
+            var coverId = bookDto.Id.ToString();
+            var coverDto = await _booksService.GetBookCoverAsync(coverId);
+
+            if (coverDto != null)
+            {
+                bookDto.Cover = coverDto;
+            }
         }
 
         return Ok(bookDto);
