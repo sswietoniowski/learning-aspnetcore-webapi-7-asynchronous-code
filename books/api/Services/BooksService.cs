@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Net;
 using System.Text.Json;
 using AutoMapper;
@@ -14,13 +15,17 @@ public class BooksService : IBooksService
     private readonly IMapper _mapper;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<BooksService> _logger;
 
-    public BooksService(IBooksRepository repository, IMapper mapper, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    public BooksService(IBooksRepository repository, IMapper mapper, 
+        IHttpClientFactory httpClientFactory, IConfiguration configuration,
+        ILogger<BooksService> logger)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public IEnumerable<BookDto> GetBooks()
@@ -245,6 +250,8 @@ public class BooksService : IBooksService
 
         foreach (var coverId in coverIds)
         {
+            _logger.LogInformation($"Getting cover with id {coverId} for book with id {bookId}.");
+
             var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
 
             if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
@@ -268,8 +275,65 @@ public class BooksService : IBooksService
             }
 
             covers.Add(cover);
+
+            _logger.LogInformation($"Got cover with id {coverId} for book with id {bookId}.");
         }
 
         return covers;
     }
+
+    public async Task<IEnumerable<CoverDto>> GetBookCoversProcessAfterWaitForAllAsync(Guid bookId)
+    {
+         var httpClient = _httpClientFactory.CreateClient();
+
+        var externalApiBaseUrl = _configuration["ExternalApiBaseUrl"];
+
+        // dummy cover ids
+        var coverIds = new List<int> { 1, 2, 3, 4, 5 };
+
+        // more info about ConcurrentBag can be found here: https://dotnetpattern.com/csharp-concurrentbag
+        var covers = new ConcurrentBag<CoverDto>();
+
+        var tasks = new List<Task>();
+
+        foreach (var coverId in coverIds)
+        {
+            var task = Task.Run(async () => 
+            {
+                _logger.LogInformation($"Getting cover with id {coverId} for book with id {bookId}.");
+
+                var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
+
+                if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
+                {
+                    return;
+                }
+
+                var data = await response.Content.ReadAsStringAsync();
+
+                var cover = JsonSerializer.Deserialize<CoverDto>(
+                    data,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }
+                );
+
+                if (cover is null)
+                {
+                    return;
+                }
+
+                covers.Add(cover);
+
+                _logger.LogInformation($"Got cover with id {coverId} for book with id {bookId}.");
+            });
+
+            tasks.Add(task);
+        }
+
+        await Task.WhenAll(tasks);
+
+        return covers.ToList();
+   }
 }

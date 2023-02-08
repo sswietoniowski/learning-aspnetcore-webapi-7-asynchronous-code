@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using Books.Api.Configurations.Middleware.Filters;
 using Books.Api.Dtos;
+using Books.Api.Dtos.External;
 using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +12,12 @@ namespace Books.Api.Controller;
 public class BooksAsyncController : ControllerBase
 {
     private readonly IBooksService _booksService;
+    private readonly ILogger<BooksAsyncController> _logger;
 
-    public BooksAsyncController(IBooksService booksService)
+    public BooksAsyncController(IBooksService booksService, ILogger<BooksAsyncController> logger)
     {
         _booksService = booksService ?? throw new ArgumentNullException(nameof(booksService));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [HttpGet]
@@ -50,7 +54,7 @@ public class BooksAsyncController : ControllerBase
     // that is why we are using syntax below
     [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<BookDto>> GetBook(Guid bookId, bool retrieveBookCover = false, 
-        bool retrieveAllBookCovers = false)
+        bool retrieveAllBookCovers = false, ProcessingStrategy? processingStrategy = null)
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
 
@@ -65,11 +69,34 @@ public class BooksAsyncController : ControllerBase
             }
         }
 
-        if (retrieveAllBookCovers)
+        var strategies = new Dictionary<ProcessingStrategy, Func<Guid, Task<IEnumerable<CoverDto>>>>()
         {
-            // here we are retrieving the covers for all books from an external API
-            var coversDto = await _booksService.GetBookCoversProcessOneByOneAsync(bookId);
+            { ProcessingStrategy.OneByOne, _booksService.GetBookCoversProcessOneByOneAsync },
+            { ProcessingStrategy.AfterWaitForAll, _booksService.GetBookCoversProcessAfterWaitForAllAsync }
+        };
 
+        processingStrategy ??= ProcessingStrategy.OneByOne;
+
+        if (retrieveAllBookCovers && strategies.ContainsKey(processingStrategy!.Value))
+        {
+            var stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
+            _logger.LogInformation("Starting to retrieve all covers for book {BookId} (process one by one)", bookId);
+
+            // here we are retrieving the covers for all books from an external API using chosen strategy
+            
+            var strategy = strategies[processingStrategy.Value];
+
+            var coversDto = await strategy.Invoke(bookId);
+
+            stopwatch.Stop();
+
+            var elapsed = stopwatch.Elapsed;
+
+            _logger.LogInformation($"Time elapsed: {elapsed}");
+            
             if (coversDto != null)
             {
                 bookDto.AllCovers = coversDto;
@@ -110,4 +137,10 @@ public class BooksAsyncController : ControllerBase
 
         return NoContent();
     }
+}
+
+public enum ProcessingStrategy
+{
+    OneByOne,
+    AfterWaitForAll
 }
