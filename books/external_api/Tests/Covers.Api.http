@@ -8,6 +8,9 @@
 @coverId = 1
 
 ### retrieve cover (successfuly)
+GET {{baseUrl}}/api/covers/{{coverId}} HTTP/1.1
+
+### retrieve cover (successfuly)
 GET {{baseUrl}}/api/covers/{{coverId}}?returnFault=false HTTP/1.1
 
 ### retrieve cover (unsuccessfuly)
