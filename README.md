@@ -1,4 +1,4 @@
-# Learning ASP.NET Core - WebAPI (.NET 6) Asynchronous Code
+# Learning ASP.NET Core - WebAPI (.NET 6/7) Asynchronous Code
 
 This repository contains resources helping with understanding how to use asynchronous programming while creating WebAPI applications.
 
