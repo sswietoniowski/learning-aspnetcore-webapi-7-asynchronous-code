@@ -284,7 +284,7 @@ public class BooksService : IBooksService
 
     public async Task<IEnumerable<CoverDto>> GetBookCoversParallelAndWaitForAllAsync(Guid bookId)
     {
-         var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient();
 
         var externalApiBaseUrl = _configuration["ExternalApiBaseUrl"];
 
