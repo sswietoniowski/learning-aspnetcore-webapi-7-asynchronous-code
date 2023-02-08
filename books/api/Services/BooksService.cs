@@ -1,6 +1,9 @@
+using System.Net;
+using System.Text.Json;
 using AutoMapper;
 using Books.Api.Configurations.Exceptions;
 using Books.Api.Dtos;
+using Books.Api.Dtos.External;
 using Books.Api.Entities;
 
 namespace Books.Api.Services;
@@ -9,11 +12,15 @@ public class BooksService : IBooksService
 {
     private readonly IBooksRepository _repository;
     private readonly IMapper _mapper;
-    
-    public BooksService(IBooksRepository repository, IMapper mapper)
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
+
+    public BooksService(IBooksRepository repository, IMapper mapper, IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
     public IEnumerable<BookDto> GetBooks()
@@ -89,9 +96,8 @@ public class BooksService : IBooksService
 
     public async Task<(string, IEnumerable<BookDto>)> CreateBooksAsync(IEnumerable<BookForCreationDto> bookDtos)
     {
-        // TODO: think about better way to do this
-
         var books = new List<Book>();
+
         foreach (var bookDto in bookDtos)
         {
             var book = _mapper.Map<Book>(bookDto);
@@ -198,5 +204,28 @@ public class BooksService : IBooksService
         }
         
         await _repository.SaveChangesAsync();
+    }
+
+    public async Task<CoverDto?> GetBookCoverAsync(string coverId)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+
+        var externalApiBaseUrl = _configuration["ExternalApiBaseUrl"];
+
+        var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
+
+        if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
+        {
+            return null;
+        }
+
+        var data = await response.Content.ReadAsStringAsync();
+    
+        return JsonSerializer.Deserialize<CoverDto>(
+            data,
+            new JsonSerializerOptions 
+            { PropertyNameCaseInsensitive = true 
+            }
+        );
     }
 }

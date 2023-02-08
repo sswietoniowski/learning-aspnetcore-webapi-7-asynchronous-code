@@ -1,4 +1,5 @@
 using Books.Api.Dtos;
+using Books.Api.Dtos.External;
 
 namespace Books.Api.Services;
 
@@ -19,4 +20,7 @@ public interface IBooksService
     void DeleteBook(Guid bookId);
     Task DeleteBookAsync(Guid bookId);
     Task DeleteBooksAsync(IEnumerable<Guid> bookIds);
+
+    // External
+    Task<CoverDto?> GetBookCoverAsync(string coverId);
 }

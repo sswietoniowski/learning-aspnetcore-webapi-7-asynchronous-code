@@ -353,3 +353,9 @@ Since ASP.NET Core 6 `System.Text.Json` supports streaming, which, combined with
 result in objects being streamed to the client as they are ready.
 
 To understand how async streams work please read [this](https://www.dotnetcurry.com/csharp/async-streams) article.
+
+## Consuming External APIs
+
+> Consuming external APIs is a common task in web development. It is useful for retrieving data from external sources, such as weather data or stock prices.
+
+To consume external APIs we have to use `HttpClient` class.

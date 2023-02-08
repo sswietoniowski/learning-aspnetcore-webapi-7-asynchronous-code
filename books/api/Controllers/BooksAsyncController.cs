@@ -53,6 +53,15 @@ public class BooksAsyncController : ControllerBase
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
 
+        // here we are retrieving the cover for the book from an external API
+        var coverId = bookDto.Id.ToString();
+        var coverDto = await _booksService.GetBookCoverAsync(coverId);
+
+        if (coverDto != null)
+        {
+            bookDto.Cover = coverDto;
+        }
+
         return Ok(bookDto);
     }
 

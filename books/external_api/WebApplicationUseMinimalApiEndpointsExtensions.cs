@@ -7,11 +7,13 @@ public static class WebApplicationUseMinimalApiEndpointsExtensions
 {
     public static void UseMinimalApiEndpoints(this WebApplication app)
     {
-        app.MapGet("api/covers/{coverId}", async (ICoversService coversService, string coverId, bool returnFault) =>
+        app.MapGet("api/covers/{coverId}", async (ICoversService coversService, string coverId, bool? returnFault) =>
         {
             var coverDto = await coversService.GetCoverAsync(coverId);
 
-            if (returnFault)
+            returnFault ??= false;
+
+            if (returnFault!.Value)
             {
                 const int DELAY_IN_SECONDS = 5;
 

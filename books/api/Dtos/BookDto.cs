@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Books.Api.Dtos.External;
 
 namespace Books.Api.Dtos;
 
@@ -33,4 +34,6 @@ public class BookDto
     // consider using only constructor with parameters to eliminate risk of creating an invalid object
     // if you do that, reconfigure AutoMapper to use the constructor with parameters (example below):
     // .ConstructUsing(src => new BookDto(src.Id, src.Title, src.Description, src.AuthorId, src.Author));
+
+    public CoverDto? Cover { get; set; }
 }
