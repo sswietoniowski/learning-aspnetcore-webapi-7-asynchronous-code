@@ -36,4 +36,5 @@ public class BookDto
     // .ConstructUsing(src => new BookDto(src.Id, src.Title, src.Description, src.AuthorId, src.Author));
 
     public CoverDto? Cover { get; set; }
+    public IEnumerable<CoverDto> AllCovers { get; set; } = new List<CoverDto>();
 }

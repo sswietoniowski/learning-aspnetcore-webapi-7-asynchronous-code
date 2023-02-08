@@ -206,11 +206,14 @@ public class BooksService : IBooksService
         await _repository.SaveChangesAsync();
     }
 
-    public async Task<CoverDto?> GetBookCoverAsync(string coverId)
-    {
+    public async Task<CoverDto?> GetBookCoverAsync(Guid bookId)
+    {        
         var httpClient = _httpClientFactory.CreateClient();
 
         var externalApiBaseUrl = _configuration["ExternalApiBaseUrl"];
+
+        // dummy cover id
+        var coverId = 1;
 
         var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
 
@@ -227,5 +230,46 @@ public class BooksService : IBooksService
             { PropertyNameCaseInsensitive = true 
             }
         );
+    }
+
+    public async Task<IEnumerable<CoverDto>> GetBookCoversProcessOneByOneAsync(Guid bookId)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+
+        var externalApiBaseUrl = _configuration["ExternalApiBaseUrl"];
+
+        // dummy cover ids
+        var coverIds = new List<int> { 1, 2, 3, 4, 5 };
+
+        var covers = new List<CoverDto>();
+
+        foreach (var coverId in coverIds)
+        {
+            var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
+
+            if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
+            {
+                continue;
+            }
+
+            var data = await response.Content.ReadAsStringAsync();
+
+            var cover = JsonSerializer.Deserialize<CoverDto>(
+                data,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }
+            );
+
+            if (cover is null)
+            {
+                continue;
+            }
+
+            covers.Add(cover);
+        }
+
+        return covers;
     }
 }

@@ -22,5 +22,6 @@ public interface IBooksService
     Task DeleteBooksAsync(IEnumerable<Guid> bookIds);
 
     // External
-    Task<CoverDto?> GetBookCoverAsync(string coverId);
+    Task<CoverDto?> GetBookCoverAsync(Guid bookId);
+    Task<IEnumerable<CoverDto>> GetBookCoversProcessOneByOneAsync(Guid bookId);
 }
