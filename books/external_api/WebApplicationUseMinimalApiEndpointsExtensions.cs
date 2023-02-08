@@ -11,7 +11,7 @@ public static class WebApplicationUseMinimalApiEndpointsExtensions
         {
             if (returnFault ?? false)
             {
-                const int DELAY_IN_SECONDS = 5;
+                const int DELAY_IN_SECONDS = 1;
                 await Task.Delay(TimeSpan.FromSeconds(DELAY_IN_SECONDS));
 
                 return Results.Problem("Something went wrong", statusCode: StatusCodes.Status500InternalServerError);
