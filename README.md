@@ -359,3 +359,30 @@ To understand how async streams work please read [this](https://www.dotnetcurry.
 > Consuming external APIs is a common task in web development. It is useful for retrieving data from external sources, such as weather data or stock prices.
 
 To consume external APIs we have to use `HttpClient` class.
+
+Example:
+
+```csharp
+
+public class WeatherForecastService
+{
+    private readonly HttpClient _httpClient;
+
+    public WeatherForecastService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<WeatherForecast> GetWeatherForecastAsync()
+    {
+        var response = await _httpClient.GetAsync("https://localhost:5001/weatherforecast");
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<WeatherForecast>();
+        }
+
+        return null;
+    }
+}
+```
