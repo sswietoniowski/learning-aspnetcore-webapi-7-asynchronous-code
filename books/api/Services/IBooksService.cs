@@ -23,6 +23,6 @@ public interface IBooksService
 
     // External
     Task<CoverDto?> GetBookCoverAsync(Guid bookId);
-    Task<IEnumerable<CoverDto>> GetBookCoversProcessOneByOneAsync(Guid bookId);
-    Task<IEnumerable<CoverDto>> GetBookCoversProcessAfterWaitForAllAsync(Guid bookId);
+    Task<IEnumerable<CoverDto>> GetBookCoversOneByOneAsync(Guid bookId);
+    Task<IEnumerable<CoverDto>> GetBookCoversParallelAndWaitForAllAsync(Guid bookId);
 }

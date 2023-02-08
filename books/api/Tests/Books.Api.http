@@ -122,7 +122,7 @@ GET {{baseUrl}}/api/books/bulk/(c0a80121-48aa-48b0-8c0c-927b1f8eac2c,c0a80121-48
 GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveBookCover=true HTTP/1.1
 
 ### retrieve a book with all covers (calling external API) - process one by one
-GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&processingStrategy=OneByOne HTTP/1.1
+GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&retrievingStrategy=OneByOne HTTP/1.1
 
 ### retrieve a book with all covers (calling external API) - wait for all
-GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&processingStrategy=AfterWaitForAll HTTP/1.1
+GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&retrievingStrategy=ParallelAndWaitForAll HTTP/1.1

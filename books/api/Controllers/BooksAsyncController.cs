@@ -54,7 +54,7 @@ public class BooksAsyncController : ControllerBase
     // that is why we are using syntax below
     [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<BookDto>> GetBook(Guid bookId, bool retrieveBookCover = false, 
-        bool retrieveAllBookCovers = false, ProcessingStrategy? processingStrategy = null)
+        bool retrieveAllBookCovers = false, RetrievingStrategy? retrievingStrategy = null)
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
 
@@ -69,15 +69,15 @@ public class BooksAsyncController : ControllerBase
             }
         }
 
-        var strategies = new Dictionary<ProcessingStrategy, Func<Guid, Task<IEnumerable<CoverDto>>>>()
+        var strategies = new Dictionary<RetrievingStrategy, Func<Guid, Task<IEnumerable<CoverDto>>>>()
         {
-            { ProcessingStrategy.OneByOne, _booksService.GetBookCoversProcessOneByOneAsync },
-            { ProcessingStrategy.AfterWaitForAll, _booksService.GetBookCoversProcessAfterWaitForAllAsync }
+            { RetrievingStrategy.OneByOne, _booksService.GetBookCoversOneByOneAsync },
+            { RetrievingStrategy.ParallelAndWaitForAll, _booksService.GetBookCoversParallelAndWaitForAllAsync }
         };
 
-        processingStrategy ??= ProcessingStrategy.OneByOne;
+        retrievingStrategy ??= RetrievingStrategy.OneByOne;
 
-        if (retrieveAllBookCovers && strategies.ContainsKey(processingStrategy!.Value))
+        if (retrieveAllBookCovers && strategies.ContainsKey(retrievingStrategy!.Value))
         {
             var stopwatch = new Stopwatch();
 
@@ -86,8 +86,8 @@ public class BooksAsyncController : ControllerBase
             _logger.LogInformation("Starting to retrieve all covers for book {BookId} (process one by one)", bookId);
 
             // here we are retrieving the covers for all books from an external API using chosen strategy
-            
-            var strategy = strategies[processingStrategy.Value];
+
+            var strategy = strategies[retrievingStrategy.Value];
 
             var coversDto = await strategy.Invoke(bookId);
 
@@ -139,8 +139,8 @@ public class BooksAsyncController : ControllerBase
     }
 }
 
-public enum ProcessingStrategy
+public enum RetrievingStrategy
 {
     OneByOne,
-    AfterWaitForAll
+    ParallelAndWaitForAll
 }

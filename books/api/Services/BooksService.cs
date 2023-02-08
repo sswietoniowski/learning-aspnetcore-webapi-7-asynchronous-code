@@ -237,7 +237,7 @@ public class BooksService : IBooksService
         );
     }
 
-    public async Task<IEnumerable<CoverDto>> GetBookCoversProcessOneByOneAsync(Guid bookId)
+    public async Task<IEnumerable<CoverDto>> GetBookCoversOneByOneAsync(Guid bookId)
     {
         var httpClient = _httpClientFactory.CreateClient();
 
@@ -282,7 +282,7 @@ public class BooksService : IBooksService
         return covers;
     }
 
-    public async Task<IEnumerable<CoverDto>> GetBookCoversProcessAfterWaitForAllAsync(Guid bookId)
+    public async Task<IEnumerable<CoverDto>> GetBookCoversParallelAndWaitForAllAsync(Guid bookId)
     {
          var httpClient = _httpClientFactory.CreateClient();
 
