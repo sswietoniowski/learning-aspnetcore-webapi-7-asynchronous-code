@@ -9,17 +9,15 @@ public static class WebApplicationUseMinimalApiEndpointsExtensions
     {
         app.MapGet("api/covers/{coverId}", async (ICoversService coversService, string coverId, bool? returnFault) =>
         {
-            var coverDto = await coversService.GetCoverAsync(coverId);
-
-            returnFault ??= false;
-
-            if (returnFault!.Value)
+            if (returnFault ?? false)
             {
                 const int DELAY_IN_SECONDS = 5;
-
                 await Task.Delay(TimeSpan.FromSeconds(DELAY_IN_SECONDS));
+
                 return Results.Problem("Something went wrong", statusCode: StatusCodes.Status500InternalServerError);
             }
+
+            var coverDto = await coversService.GetCoverAsync(coverId);
 
             return Results.Ok(coverDto);
         })
