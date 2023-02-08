@@ -386,3 +386,7 @@ public class WeatherForecastService
     }
 }
 ```
+
+While processing external API requests we might want to use parallel requests. To do that can use `Parallel.ForEach` method or create a `Task` for each request.
+
+It might seem like a good idea, but in fact it is not, because this way me might reduce overall performance of our application due to thread pool exhaustion.
