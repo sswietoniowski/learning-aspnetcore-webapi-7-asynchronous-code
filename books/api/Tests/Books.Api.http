@@ -124,5 +124,8 @@ GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveBookCover=true HTTP/1.1
 ### retrieve a book with all covers (calling external API) - process one by one
 GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&retrievingStrategy=OneByOne HTTP/1.1
 
-### retrieve a book with all covers (calling external API) - wait for all
+### retrieve a book with all covers (calling external API) - process parallel and wait for all
 GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&retrievingStrategy=ParallelAndWaitForAll HTTP/1.1
+
+### retrieve a book with all covers (calling external API) - return value tuple and use action filter with complex mapping
+GET {{baseUrl}}/api/books/async/covers/{{bookId}} HTTP/1.1

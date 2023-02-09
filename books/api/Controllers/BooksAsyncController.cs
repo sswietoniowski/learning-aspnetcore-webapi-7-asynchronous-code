@@ -46,6 +46,34 @@ public class BooksAsyncController : ControllerBase
         }
     }
 
+    [HttpGet("covers/{bookId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [TypeFilter(typeof(BookWithCoversResultFilter))]
+    public async Task<ActionResult<(BookDto Book, IEnumerable<CoverDto> Covers)>> GetBookWithCovers(Guid bookId)
+    {
+        var bookDto = await _booksService.GetBookByIdAsync(bookId);
+
+        var coversDto = await _booksService.GetBookCoversParallelAndWaitForAllAsync(bookId);
+
+        if (bookDto is null)
+        {
+            return NotFound();
+        }
+
+        coversDto ??= Enumerable.Empty<CoverDto>();
+
+        // returning a value tuple
+
+        // 1st syntax
+        // (BookDto Book, IEnumerable<CoverDto> Covers) result = (bookDto, coversDto);
+        // return Ok(result);
+
+        // 2nd syntax
+        return Ok((Book: bookDto, Covers: coversDto));
+    }
+
     [HttpGet("{bookId:guid}", Name = "GetBookAsync")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

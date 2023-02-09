@@ -35,6 +35,33 @@ public class BookDto
     // if you do that, reconfigure AutoMapper to use the constructor with parameters (example below):
     // .ConstructUsing(src => new BookDto(src.Id, src.Title, src.Description, src.AuthorId, src.Author));
 
+    public BookDto()
+    {
+    }
+
+    public BookDto(Guid id, string title, string? description, Guid authorId, string author)
+    {
+        Id = id;
+        Title = title;
+        Description = description;
+        AuthorId = authorId;
+        Author = author;
+    }
+
+    // we might return external DTOs (e.g. from external API) in our API, but it would be better to use a separate DTO for that
+    // as presented inside the next class: BookWithCoversDto, which is a composition of BookDto and BookCoverDto
+    // what you see here is just for quick demonstration purposes, but it's not a good practice
+
     public CoverDto? Cover { get; set; }
     public IEnumerable<CoverDto> AllCovers { get; set; } = new List<CoverDto>();
+}
+
+public class BookWithCoversDto : BookDto
+{
+    public IEnumerable<BookCoverDto> Covers { get; set; } = new List<BookCoverDto>();
+
+    public BookWithCoversDto(Guid id, string title, string? description, Guid authorId, string author)
+        : base(id, title, description, authorId, author)
+    {
+    }
 }
