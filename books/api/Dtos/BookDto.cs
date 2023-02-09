@@ -56,12 +56,21 @@ public class BookDto
     public IEnumerable<CoverDto> AllCovers { get; set; } = new List<CoverDto>();
 }
 
-public class BookWithCoversDto : BookDto
+public class BookWithCoversDto
 {
+    public Guid Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public Guid AuthorId { get; set; }
+    public string Author { get; set; } = string.Empty;
     public IEnumerable<BookCoverDto> Covers { get; set; } = new List<BookCoverDto>();
 
     public BookWithCoversDto(Guid id, string title, string? description, Guid authorId, string author)
-        : base(id, title, description, authorId, author)
     {
+        Id = id;
+        Title = title;
+        Description = description;
+        AuthorId = authorId;
+        Author = author;
     }
 }

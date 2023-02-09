@@ -9,8 +9,13 @@ public class BookProfile : Profile
 {
     public BookProfile()
     {
-        CreateMap<Book, BookDto>()
-            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.Name));
+        CreateMap<Author, string>()
+            .ConstructUsing(src => src.Name);
+        CreateMap<Book, BookDto>();
+
+        // FIXME: not working as expected, requires further investigation
+        // CreateMap<Book, BookDto>()
+        //     .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.Name));
 
         CreateMap<BookForCreationDto, Book>().ReverseMap();        
         CreateMap<BookForUpdateDto, Book>();
@@ -20,7 +25,7 @@ public class BookProfile : Profile
         CreateMap<BookDto, BookWithCoversDto>()
             .ConstructUsing(src => new BookWithCoversDto(src.Id, src.Title, src.Description, src.AuthorId, src.Author));
         CreateMap<CoverDto, BookCoverDto>();
-        CreateMap<IEnumerable<BookCoverDto>, BookWithCoversDto>()
+        CreateMap<IEnumerable<CoverDto>, BookWithCoversDto>()
             .ForMember(dest => dest.Covers, opt => opt.MapFrom(src => src));
     }
 }
