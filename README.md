@@ -437,7 +437,7 @@ public async Task<WeatherForecast> GetWeatherForecastAsync(CancellationToken can
 
         return null;
     }
-    catch (Exception ex)
+    catch (OperationCanceledException exception) // IMPORTANT: this should be OperationCanceledException not TaskCanceledException!
     {
         // handle exception
     }
