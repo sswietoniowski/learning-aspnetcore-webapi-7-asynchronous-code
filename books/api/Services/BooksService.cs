@@ -287,6 +287,9 @@ public class BooksService : IBooksService
     }
 
     public async Task<IEnumerable<CoverDto>> GetBookCoversParallelAndWaitForAllAsync(Guid bookId)
+        => await GetBookCoversParallelAndWaitForAllAsync(bookId, default(CancellationToken));
+
+    public async Task<IEnumerable<CoverDto>> GetBookCoversParallelAndWaitForAllAsync(Guid bookId, CancellationToken cancellationToken)
     {
         var httpClient = _httpClientFactory.CreateClient();
 
@@ -294,9 +297,6 @@ public class BooksService : IBooksService
 
         // dummy cover ids
         var coverIds = new List<int> { 1, 2, 3, 4, 5 };
-
-        using var cancellationTokenSource = new CancellationTokenSource();
-        var cancellationToken = cancellationTokenSource.Token;
 
         // more info about ConcurrentBag can be found here: https://dotnetpattern.com/csharp-concurrentbag
         var covers = new ConcurrentBag<CoverDto>();
@@ -312,8 +312,7 @@ public class BooksService : IBooksService
                 var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}", cancellationToken);
 
                 if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
-                {
-                    cancellationTokenSource.Cancel();
+                {                                            
                     return;
                 }
 

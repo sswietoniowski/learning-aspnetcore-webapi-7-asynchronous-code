@@ -51,7 +51,7 @@ public class BooksAsyncController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [TypeFilter(typeof(BookWithCoversResultFilter))]
-    public async Task<ActionResult<(BookDto Book, IEnumerable<CoverDto> Covers)>> GetBookWithCovers(Guid bookId)
+    public async Task<ActionResult<(BookDto Book, IEnumerable<CoverDto> Covers)>> GetBookWithCovers(Guid bookId, CancellationToken cancellationToken)
     {
         var bookDto = await _booksService.GetBookByIdAsync(bookId);
 
