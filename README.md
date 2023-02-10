@@ -390,3 +390,68 @@ public class WeatherForecastService
 While processing external API requests we might want to use parallel requests. To do that can use `Parallel.ForEach` method or create a `Task` for each request.
 
 It might seem like a good idea, but in fact it is not, because this way me might reduce overall performance of our application due to thread pool exhaustion.
+
+## Cancellation Tokens
+
+> Cancellation tokens are used to cancel long-running operations. They are useful for operations that can take a long time, such as database queries or external API calls.
+
+To use cancellation tokens we have to pass them to the methods that we want to cancel.
+
+Example:
+
+```csharp
+public async Task<WeatherForecast> GetWeatherForecastAsync(CancellationToken cancellationToken)
+{
+    var response = await _httpClient.GetAsync("https://localhost:5001/weatherforecast", cancellationToken);
+
+    if (response.IsSuccessStatusCode)
+    {
+        return await response.Content.ReadFromJsonAsync<WeatherForecast>(cancellationToken: cancellationToken);
+    }
+
+    return null;
+}
+```
+
+## Exception Handling
+
+> Exception handling is a way to handle errors that occur during execution. It is useful for handling errors that occur during execution, such as database errors or external API errors.
+
+Handling exceptions in async code is easy as long as we are using `async` and `await` all the way through the call stack.
+
+We can use different approaches to handle exceptions. We can use `try-catch` block, `ExceptionFilter` or `ExceptionMiddleware` (my preferred approach).
+
+Example of `try-catch` block:
+
+```csharp
+public async Task<WeatherForecast> GetWeatherForecastAsync(CancellationToken cancellationToken)
+{
+    try
+    {
+        var response = await _httpClient.GetAsync("https://localhost:5001/weatherforecast", cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<WeatherForecast>(cancellationToken: cancellationToken);
+        }
+
+        return null;
+    }
+    catch (Exception ex)
+    {
+        // handle exception
+    }
+}
+```
+
+Example of `ExceptionFilter`:
+
+```csharp
+public class ExceptionFilter : IAsyncExceptionFilter
+{
+    public async Task OnExceptionAsync(ExceptionContext context)
+    {
+        // handle exception
+    }
+}
+```
