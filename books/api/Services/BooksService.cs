@@ -248,18 +248,22 @@ public class BooksService : IBooksService
 
         var covers = new List<CoverDto>();
 
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = cancellationTokenSource.Token;
+
         foreach (var coverId in coverIds)
         {
             _logger.LogInformation($"Getting cover with id {coverId} for book with id {bookId}.");
 
-            var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
+            var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}", cancellationToken);
 
             if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
             {
+                cancellationTokenSource.Cancel();
                 continue;
             }
 
-            var data = await response.Content.ReadAsStringAsync();
+            var data = await response.Content.ReadAsStringAsync(cancellationToken);
 
             var cover = JsonSerializer.Deserialize<CoverDto>(
                 data,
@@ -291,6 +295,9 @@ public class BooksService : IBooksService
         // dummy cover ids
         var coverIds = new List<int> { 1, 2, 3, 4, 5 };
 
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = cancellationTokenSource.Token;
+
         // more info about ConcurrentBag can be found here: https://dotnetpattern.com/csharp-concurrentbag
         var covers = new ConcurrentBag<CoverDto>();
 
@@ -302,14 +309,15 @@ public class BooksService : IBooksService
             {
                 _logger.LogInformation($"Getting cover with id {coverId} for book with id {bookId}.");
 
-                var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}");
+                var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}", cancellationToken);
 
                 if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
                 {
+                    cancellationTokenSource.Cancel();
                     return;
                 }
 
-                var data = await response.Content.ReadAsStringAsync();
+                var data = await response.Content.ReadAsStringAsync(cancellationToken);
 
                 var cover = JsonSerializer.Deserialize<CoverDto>(
                     data,
@@ -327,7 +335,7 @@ public class BooksService : IBooksService
                 covers.Add(cover);
 
                 _logger.LogInformation($"Got cover with id {coverId} for book with id {bookId}.");
-            });
+            }, cancellationToken);
 
             tasks.Add(task);
         }
