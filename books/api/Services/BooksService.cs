@@ -301,6 +301,14 @@ public class BooksService : IBooksService
         // more info about ConcurrentBag can be found here: https://dotnetpattern.com/csharp-concurrentbag
         var covers = new ConcurrentBag<CoverDto>();
 
+        // our code can use linked cancellation token source to cancel all tasks if one of them fails
+        // more info about linked cancellation token source can be found here: 
+        // https://medium.com/@mitesh_shah/a-deep-dive-into-c-s-cancellationtoken-44bc7664555f
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var serviceCancellationToken = cancellationTokenSource.Token;
+        using var linkedCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, serviceCancellationToken);
+        var linkedCancellationToken = linkedCancellationTokenSource.Token;
+
         var tasks = new List<Task>();
 
         foreach (var coverId in coverIds)
@@ -309,14 +317,15 @@ public class BooksService : IBooksService
             {
                 _logger.LogInformation($"Getting cover with id {coverId} for book with id {bookId}.");
 
-                var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}", cancellationToken);
+                var response = await httpClient.GetAsync($"{externalApiBaseUrl}/api/covers/{coverId}", linkedCancellationToken);
 
                 if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
-                {                                            
+                {   
+                    linkedCancellationTokenSource.Cancel();                                         
                     return;
                 }
 
-                var data = await response.Content.ReadAsStringAsync(cancellationToken);
+                var data = await response.Content.ReadAsStringAsync(linkedCancellationToken);
 
                 var cover = JsonSerializer.Deserialize<CoverDto>(
                     data,
@@ -334,7 +343,7 @@ public class BooksService : IBooksService
                 covers.Add(cover);
 
                 _logger.LogInformation($"Got cover with id {coverId} for book with id {bookId}.");
-            }, cancellationToken);
+            }, linkedCancellationToken);
 
             tasks.Add(task);
         }
