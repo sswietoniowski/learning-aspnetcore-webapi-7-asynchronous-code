@@ -260,7 +260,7 @@ public class BooksService : IBooksService
             if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
             {
                 cancellationTokenSource.Cancel();
-                continue;
+                break;
             }
 
             var data = await response.Content.ReadAsStringAsync(cancellationToken);
