@@ -304,8 +304,9 @@ public class BooksService : IBooksService
         // our code can use linked cancellation token source to cancel all tasks if one of them fails
         // more info about linked cancellation token source can be found here: 
         // https://medium.com/@mitesh_shah/a-deep-dive-into-c-s-cancellationtoken-44bc7664555f
-        using var cancellationTokenSource = new CancellationTokenSource();
-        var serviceCancellationToken = cancellationTokenSource.Token;
+        using var serviceCancellationTokenSource = new CancellationTokenSource();
+        var serviceCancellationToken = serviceCancellationTokenSource.Token;
+        
         using var linkedCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, serviceCancellationToken);
         var linkedCancellationToken = linkedCancellationTokenSource.Token;
 
