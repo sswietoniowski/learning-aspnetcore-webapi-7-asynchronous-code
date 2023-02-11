@@ -176,6 +176,11 @@ public class BooksAsyncController : ControllerBase
 
         _logger.LogInformation($"ThreadId after calling {nameof(CalculatePageCount_BadCode)}: {Thread.CurrentThread.ManagedThreadId}");
 
+        // while dealing with bad practices, we should use async/await all the way, so we should not use .Result or .Wait()
+        // because they are blocking and can starve the thread pool
+
+        // another problem could be related to shared state management
+
         return Ok(bookWithPageCountDto);
     }
 
