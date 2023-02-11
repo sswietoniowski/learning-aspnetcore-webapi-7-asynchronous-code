@@ -74,3 +74,23 @@ public class BookWithCoversDto
         Author = author;
     }
 }
+
+public class BookWithPageCountDto
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public Guid AuthorId { get; set; }
+    public string Author { get; set; } = string.Empty;
+    public int PageCount { get; set; }
+
+    public BookWithPageCountDto(Guid id, string title, string? description, Guid authorId, string author, int pageCount)
+    {
+        Id = id;
+        Title = title;
+        Description = description;
+        AuthorId = authorId;
+        Author = author;
+        PageCount = pageCount;
+    }
+}

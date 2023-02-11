@@ -129,3 +129,6 @@ GET {{baseUrl}}/api/books/async/{{bookId}}?retrieveAllBookCovers=true&retrieving
 
 ### retrieve a book with all covers (calling external API) - return value tuple and use action filter with complex mapping
 GET {{baseUrl}}/api/books/async/covers/{{bookId}} HTTP/1.1
+
+### retrieve a book and calculate number of pages using legacy code
+GET {{baseUrl}}/api/books/async/legacy/{{bookId}} HTTP/1.1

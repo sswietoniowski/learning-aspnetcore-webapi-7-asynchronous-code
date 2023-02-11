@@ -3,6 +3,7 @@ using Books.Api.Configurations.Middleware.Filters;
 using Books.Api.Dtos;
 using Books.Api.Dtos.External;
 using Books.Api.Services;
+using BooksApi.Services.Legacy;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Api.Controller;
@@ -12,11 +13,13 @@ namespace Books.Api.Controller;
 public class BooksAsyncController : ControllerBase
 {
     private readonly IBooksService _booksService;
+    private readonly IBooksPageCalculatorService _booksPageCalculatorService;
     private readonly ILogger<BooksAsyncController> _logger;
 
-    public BooksAsyncController(IBooksService booksService, ILogger<BooksAsyncController> logger)
+    public BooksAsyncController(IBooksService booksService, IBooksPageCalculatorService booksPageCalculatorService, ILogger<BooksAsyncController> logger)
     {
         _booksService = booksService ?? throw new ArgumentNullException(nameof(booksService));
+        _booksPageCalculatorService = booksPageCalculatorService ?? throw new ArgumentNullException(nameof(booksPageCalculatorService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
@@ -44,34 +47,6 @@ public class BooksAsyncController : ControllerBase
 
             yield return bookDto;
         }
-    }
-
-    [HttpGet("covers/{bookId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [TypeFilter(typeof(BookWithCoversResultFilter))]
-    public async Task<ActionResult<(BookDto Book, IEnumerable<CoverDto> Covers)>> GetBookWithCovers(Guid bookId, CancellationToken cancellationToken)
-    {
-        var bookDto = await _booksService.GetBookByIdAsync(bookId);
-
-        var coversDto = await _booksService.GetBookCoversParallelAndWaitForAllAsync(bookId);
-
-        if (bookDto is null)
-        {
-            return NotFound();
-        }
-
-        coversDto ??= Enumerable.Empty<CoverDto>();
-
-        // returning a value tuple
-
-        // 1st syntax
-        // (BookDto Book, IEnumerable<CoverDto> Covers) result = (bookDto, coversDto);
-        // return Ok(result);
-
-        // 2nd syntax
-        return Ok((Book: bookDto, Covers: coversDto));
     }
 
     [HttpGet("{bookId:guid}", Name = "GetBookAsync")]
@@ -132,6 +107,55 @@ public class BooksAsyncController : ControllerBase
         }
 
         return Ok(bookDto);
+    }
+
+    [HttpGet("covers/{bookId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [TypeFilter(typeof(BookWithCoversResultFilter))]
+    public async Task<ActionResult<(BookDto Book, IEnumerable<CoverDto> Covers)>> GetBookWithCovers(Guid bookId, CancellationToken cancellationToken)
+    {
+        var bookDto = await _booksService.GetBookByIdAsync(bookId);
+
+        if (bookDto is null)
+        {
+            return NotFound();
+        }
+
+        var coversDto = await _booksService.GetBookCoversParallelAndWaitForAllAsync(bookId);
+
+        coversDto ??= Enumerable.Empty<CoverDto>();
+
+        // returning a value tuple
+
+        // 1st syntax
+        // (BookDto Book, IEnumerable<CoverDto> Covers) result = (bookDto, coversDto);
+        // return Ok(result);
+
+        // 2nd syntax
+        return Ok((Book: bookDto, Covers: coversDto));
+    }
+
+    [HttpGet("legacy/{bookId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<BookWithPageCountDto>> GetBookWithPageCount(Guid bookId, CancellationToken cancellationToken)
+    {
+        var bookDto = await _booksService.GetBookByIdAsync(bookId);
+        
+        if (bookDto is null)
+        {
+            return NotFound();
+        }
+
+        // called a legacy service that is not async
+        var pageCount = _booksPageCalculatorService.CalculatePageCount(bookId);
+
+        var bookWithPageCountDto = new BookWithPageCountDto(bookDto.Id, bookDto.Title, bookDto.Description, bookDto.AuthorId, bookDto.Author, pageCount);
+
+        return Ok(bookWithPageCountDto);
     }
 
     [HttpPost]

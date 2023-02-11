@@ -455,3 +455,11 @@ public class ExceptionFilter : IAsyncExceptionFilter
     }
 }
 ```
+
+## Additional Async Return Types
+
+`Task` and `Task<T>` are the most common return types for async methods, but they are reference types, which means that they are allocated on the heap.
+That might lead to unwanted memory allocations in performance critical paths. To avoid that we can use `ValueTask` and `ValueTask<T>`. They are value types, which means that they are allocated on the stack.
+They can be used due to the introduction of `GetAwaiter()` method.
+
+> `ValueTask<T>` is a struct that wraps a `Task<T>` or a `T` value. It is used to avoid allocations when the result is already available.
