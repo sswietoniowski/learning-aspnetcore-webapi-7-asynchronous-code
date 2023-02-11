@@ -137,6 +137,15 @@ public class BooksAsyncController : ControllerBase
         return Ok((Book: bookDto, Covers: coversDto));
     }
 
+    private Task<int> CalculatePageCount_BadCode(Guid bookId)
+    {
+        return Task.Run(() => {
+            _logger.LogInformation($"ThreadId while calculating page count: {Thread.CurrentThread.ManagedThreadId}");
+
+            return _booksPageCalculatorService.CalculatePageCount(bookId);
+        });
+    }
+
     [HttpGet("legacy/{bookId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -150,10 +159,22 @@ public class BooksAsyncController : ControllerBase
             return NotFound();
         }
 
-        // called a legacy service that is not async
-        var pageCount = _booksPageCalculatorService.CalculatePageCount(bookId);
+        // 1st approach - calling a legacy service that is not async and is blocking
+        // var pageCount = _booksPageCalculatorService.CalculatePageCount(bookId);
+
+        // 2nd approach - calling a legacy service that is not async using Task.Run
+        // this is not bad per se, but it is not the best approach because it can
+        // starve the thread pool
+        // ASP.NET Core is optimized for async/await, but it is not optimized for Task.Run
+        // Task.Run is optimized for CPU-bound tasks, using Task.Run on the server side
+        // decreases scalability
+        var pageCount = await CalculatePageCount_BadCode(bookId);                        
+
+        _logger.LogInformation($"ThreadId when entering {nameof(GetBookWithPageCount)}: {Thread.CurrentThread.ManagedThreadId}");
 
         var bookWithPageCountDto = new BookWithPageCountDto(bookDto.Id, bookDto.Title, bookDto.Description, bookDto.AuthorId, bookDto.Author, pageCount);
+
+        _logger.LogInformation($"ThreadId after calling {nameof(CalculatePageCount_BadCode)}: {Thread.CurrentThread.ManagedThreadId}");
 
         return Ok(bookWithPageCountDto);
     }
