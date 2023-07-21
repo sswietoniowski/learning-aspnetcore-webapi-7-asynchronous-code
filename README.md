@@ -8,6 +8,31 @@ Original course materials can be found [here](https://app.pluralsight.com/librar
 
 This project was upgraded from .NET 6 to .NET 7.
 
+## Table of Contents
+
+- [Learning ASP.NET Core - WebAPI (.NET 7) Asynchronous Code](#learning-aspnet-core---webapi-net-7-asynchronous-code)
+  - [Table of Contents](#table-of-contents)
+  - [Setup](#setup)
+  - [Benefits of Asynchronous Programming](#benefits-of-asynchronous-programming)
+  - [Async Patterns](#async-patterns)
+  - [TAP](#tap)
+  - [EAP](#eap)
+  - [APM](#apm)
+  - [Async Return Types](#async-return-types)
+  - [The Repository Pattern](#the-repository-pattern)
+  - [WebSurge](#websurge)
+  - [k6](#k6)
+  - [The Outer Facing Model](#the-outer-facing-model)
+  - [The Repository-Service Pattern](#the-repository-service-pattern)
+  - [Result Filters](#result-filters)
+  - [Bulk Operations](#bulk-operations)
+  - [Model Binding](#model-binding)
+  - [Asynchronous Streaming](#asynchronous-streaming)
+  - [Consuming External APIs](#consuming-external-apis)
+  - [Cancellation Tokens](#cancellation-tokens)
+  - [Exception Handling](#exception-handling)
+  - [Additional Async Return Types](#additional-async-return-types)
+
 ## Setup
 
 First run "external" covers API:
