@@ -15,9 +15,9 @@ This project was upgraded from .NET 6 to .NET 7.
   - [Setup](#setup)
   - [Benefits of Asynchronous Programming](#benefits-of-asynchronous-programming)
   - [Async Patterns](#async-patterns)
-  - [TAP](#tap)
-  - [EAP](#eap)
-  - [APM](#apm)
+    - [TAP](#tap)
+    - [EAP](#eap)
+    - [APM](#apm)
   - [Async Return Types](#async-return-types)
   - [The Repository Pattern](#the-repository-pattern)
   - [WebSurge](#websurge)
@@ -32,6 +32,7 @@ This project was upgraded from .NET 6 to .NET 7.
   - [Cancellation Tokens](#cancellation-tokens)
   - [Exception Handling](#exception-handling)
   - [Additional Async Return Types](#additional-async-return-types)
+  - [Summary](#summary)
 
 ## Setup
 
@@ -70,7 +71,7 @@ There are three main patterns for asynchronous programming in .NET:
 - **EAP** (_Event-based Asynchronous Pattern_) is the legacy pattern for asynchronous programming in .NET,
 - **APM** (_Asynchronous Programming Model_) is the legacy pattern for asynchronous programming in .NET.
 
-## TAP
+### TAP
 
 > The TAP is the recommended pattern for asynchronous programming in .NET. It is based on the `Task` and `Task<T>` types. The `Task` type represents a single operation that does not return a value. The `Task<T>` type represents a single operation that returns a value of type `T`.
 
@@ -90,7 +91,7 @@ Be aware that `async` and `await` are the right way to go, but you should not us
 
 They are blocking and they can lead to deadlocks (not necessarily true these days, but blocking would be a problem still). More on that [here](https://tooslowexception.com/the-danger-of-asyncawait-and-result-in-one-picture/).
 
-## EAP
+### EAP
 
 > The EAP is the legacy pattern for asynchronous programming in .NET. It is based on events. The `XXXCompleted` events are raised when an asynchronous operation completes. The `XXXCompletedEventArgs` class contains the result of the asynchronous operation. The `XXXAsync` methods start an asynchronous operation.
 
@@ -105,7 +106,7 @@ public void GetAsync(string url, Action<string> callback)
 }
 ```
 
-## APM
+### APM
 
 > The APM is the legacy pattern for asynchronous programming in .NET. It is based on the `BeginXXX` and `EndXXX` methods. The `BeginXXX` methods start an asynchronous operation and return an `IAsyncResult` object. The `EndXXX` methods complete an asynchronous operation and return a value.
 
@@ -490,3 +491,7 @@ That might lead to unwanted memory allocations in performance critical paths. To
 They can be used due to the introduction of `GetAwaiter()` method.
 
 > `ValueTask<T>` is a struct that wraps a `Task<T>` or a `T` value. It is used to avoid allocations when the result is already available.
+
+## Summary
+
+Now you are ready to use asynchronous programming in your WebAPI applications :-).
